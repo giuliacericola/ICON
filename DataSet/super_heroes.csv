@@ -1,21 +1,21 @@
-"id","name","universe","strength","intelligence","speed","role","power_source"
-"1","Superman","DC","10","6","9","Powerhouse","Supernatural"
-"2","Batman","DC","7","9","6","Leader","Technological_Weapon"
-"3","Spiderman","MC","8","6","8","Powerhouse","Supernatural"
-"4","Flash","DC","3","4","10","Specialist","Supernatural"
-"5","Wonder Woman","DC","9","9","8","Leader","Supernatural"
-"6","Green Arrow","DC","9","8","8","Specialist","Technological_Weapon"
-"7","Iron Man","MC","6","10","7","Leader","Technological_Weapon"
-"8","Captain America","MC","8","8","6","Powerhouse","Supernatural"
-"9","Thor","MC","10","8","5","Powerhouse","Supernatural"
-"10","Hulk","MC","10","7","4","Powerhouse","Supernatural"
-"11","Black Widow","MC","5","9","5","Specialist","Technological_Weapon"
-"12","Jean Grey","MC","5","10","4","Leader","Supernatural"
-"13","Dottor Strange","MC","5","10","5","Specialist","Supernatural"
-"14","Wolverine","MC","9","8","6","Specialist","Supernatural"
-"15","Aquaman","DC","9","9","9","Leader","Supernatural"
-"16","Human Torch","MC","9","8","7","Specialist","Supernatural"
-"17","Cyborg","DC","8","10","6","Specialist","Technological_Weapon"
-"18","Martian Manhunter","DC","9","9","8","Leader","Supernatural"
-"19","Shazam","DC","10","7","8","Powerhouse","Supernatural"
-"20","Cat Woman","DC","6","8","8","Specialist","Technological_Weapon"
+id,name,universe,strength,intelligence,speed,role,power_source,popularity
+1,Superman,DC,10,6,9,Powerhouse,Supernatural,8
+2,Batman,DC,7,9,6,Leader,Technological_Weapon,10
+3,Spiderman,MC,8,6,8,Powerhouse,Supernatural,7
+4,Flash,DC,3,4,10,Specialist,Supernatural,6
+5,Wonder Woman,DC,9,9,8,Leader,Supernatural,9
+6,Green Arrow,DC,9,8,8,Specialist,Technological_Weapon,7
+7,Iron Man,MC,6,10,7,Leader,Technological_Weapon,10
+8,Captain America,MC,8,8,6,Powerhouse,Supernatural,8
+9,Thor,MC,10,8,5,Powerhouse,Supernatural,6
+10,Hulk,MC,10,7,4,Powerhouse,Supernatural,5
+11,Black Widow,MC,5,9,5,Specialist,Technological_Weapon,6
+12,Jean Grey,MC,5,10,4,Leader,Supernatural,9
+13,Dottor Strange,MC,5,10,5,Specialist,Supernatural,7
+14,Wolverine,MC,9,8,6,Specialist,Supernatural,7
+15,Aquaman,DC,9,9,9,Leader,Supernatural,9
+16,Human Torch,MC,9,8,7,Specialist,Supernatural,6
+17,Cyborg,DC,8,10,6,Specialist,Technological_Weapon,7
+18,Martian Manhunter,DC,9,9,8,Leader,Supernatural,8
+19,Shazam,DC,10,7,8,Powerhouse,Supernatural,7
+20,Cat Woman,DC,6,8,8,Specialist,Technological_Weapon,8
