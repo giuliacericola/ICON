@@ -19,3 +19,63 @@ id,name,universe,strength,intelligence,speed,role,power_source,popularity
 18,Martian Manhunter,DC,9,9,8,Leader,Supernatural,8
 19,Shazam,DC,10,7,8,Powerhouse,Supernatural,7
 20,Cat Woman,DC,6,8,8,Specialist,Technological_Weapon,8
+21,Mister Fantastic,MC,6,10,7,Leader,Supernatural,8
+22,Black Panther,MC,7,9,8,Leader,Supernatural,8
+23,Professor X,MC,2,10,3,Leader,Supernatural,9
+24,Daredevil,MC,5,7,8,Specialist,Supernatural,7
+25,Hawkeye,MC,5,7,7,Specialist,Technological_Weapon,6
+26,Falcon,MC,5,7,8,Specialist,Technological_Weapon,6
+27,Ant Man,MC,4,9,6,Specialist,Technological_Weapon,6
+28,Thing,MC,9,6,4,Powerhouse,Supernatural,7
+29,Colossus,MC,9,6,5,Powerhouse,Supernatural,6
+30,She Hulk,MC,9,8,6,Powerhouse,Supernatural,7
+31,Deadpool,MC,6,8,9,Specialist,Supernatural,6
+32,Invisible Woman,MC,5,8,7,Specialist,Supernatural,7
+33,Nightwing,DC,6,8,8,Specialist,Technological_Weapon,8
+34,Robin,DC,5,8,7,Specialist,Technological_Weapon,7
+35,Batgirl,DC,5,9,7,Specialist,Technological_Weapon,7
+36,Supergirl,DC,10,7,9,Powerhouse,Supernatural,8
+37,Bane,DC,9,8,5,Powerhouse,Supernatural,7
+38,Lex Luthor,DC,5,10,5,Leader,Technological_Weapon,9
+39,Green Lantern,DC,7,8,8,Specialist,Supernatural,8
+40,Zatanna,DC,4,8,6,Specialist,Supernatural,7
+41,John Constantine,DC,4,9,5,Specialist,Supernatural,7
+42,Black Canary,DC,6,7,8,Specialist,Supernatural,7
+43,Hawkgirl,DC,8,7,8,Powerhouse,Supernatural,7
+44,Darkseid,DC,10,9,6,Leader,Supernatural,9
+45,Nick Fury,MC,5,9,6,Leader,Technological_Weapon,8
+46,Cyclops,MC,6,9,6,Leader,Supernatural,8
+47,Doctor Doom,MC,7,10,6,Leader,Technological_Weapon,9
+48,Groot,MC,9,5,3,Powerhouse,Supernatural,8
+49,Juggernaut,MC,10,4,4,Powerhouse,Supernatural,6
+50,Abomination,MC,10,6,4,Powerhouse,Supernatural,5
+51,Luke Cage,MC,8,6,5,Powerhouse,Supernatural,6
+52,Venom,MC,8,6,7,Powerhouse,Supernatural,8
+53,Quicksilver,MC,5,6,10,Specialist,Supernatural,7
+54,Gambit,MC,6,7,8,Specialist,Supernatural,7
+55,Beast,MC,7,9,7,Specialist,Supernatural,6
+56,Moon Knight,MC,6,7,7,Specialist,Technological_Weapon,8
+57,Punisher,MC,5,7,6,Specialist,Technological_Weapon,8
+58,Mystique,MC,5,8,7,Specialist,Supernatural,6
+59,Vision,MC,9,9,7,Leader,Technological_Weapon,8
+60,Guy Gardner,DC,7,7,8,Specialist,Supernatural,6
+61,Beast Boy,DC,6,6,8,Specialist,Supernatural,7
+62,Raven,DC,5,8,6,Specialist,Supernatural,8
+63,Starfire,DC,8,7,8,Powerhouse,Supernatural,7
+64,Cyborg Superman,DC,10,9,8,Leader,Technological_Weapon,8
+65,Brainiac,DC,6,10,5,Leader,Technological_Weapon,9
+66,General Zod,DC,10,8,8,Powerhouse,Supernatural,8
+67,Solomon Grundy,DC,10,3,3,Powerhouse,Supernatural,5
+68,Doomsday,DC,10,4,5,Powerhouse,Supernatural,7
+69,Lobo,DC,9,7,7,Powerhouse,Supernatural,7
+70,Booster Gold,DC,6,7,8,Specialist,Technological_Weapon,7
+71,Red Hood,DC,6,8,7,Specialist,Technological_Weapon,8
+72,Deathstroke,DC,7,9,7,Specialist,Technological_Weapon,8
+73,John Stewart,DC,7,9,8,Leader,Supernatural,8
+74,Mister Miracle,DC,5,9,8,Specialist,Technological_Weapon,6
+75,Scarlet Witch,MC,5,8,7,Specialist,Supernatural,9
+76,Nova,MC,8,7,9,Powerhouse,Supernatural,7
+77,Star Lord,MC,5,8,7,Leader,Technological_Weapon,8
+78,Firestorm,DC,8,8,7,Powerhouse,Supernatural,6
+79,Static,DC,5,8,7,Specialist,Supernatural,7
+80,Constantine,DC,4,9,5,Specialist,Supernatural,7

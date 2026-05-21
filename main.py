@@ -1,56 +1,56 @@
 import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.tree import DecisionTreeClassifier, export_text
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-# Legge direttamente il file csv, se non lo trova non va avanti
-df = pd.read_csv("DataSet/super_heroes.csv")
 
-# Crea la lista dei valori di popolarità tra i 20 eroi
-#valori_popolarita = [8, 10, 7, 6, 9, 7, 10, 8, 6, 5, 6, 9, 7, 7, 9, 6, 7, 8, 7, 8]
-# Aggiunta nuova colonna al DataFrame
-#df['popularity'] = valori_popolarita
-# File aggiornato
-# df.to_csv("DataSet/super_heroes.csv", index=False)
-# print("Colonna 'popularity' aggiunta!")
+# Carica DataSet
+df = pd.read_csv('DataSet/super_heroes.csv')
 
-# Il Motore di Inferenza (Le regole del Sistema Esperto)
-def sistema_esperto(row):
-    # Regola per i Leader: alta intelligenza, alta popolarità
-    if row['intelligence'] >= 9  and row['popularity'] >= 8:
-        return 'Leader'
-    # Regola per i Powerhouse: massima forza
-    elif row['strength'] == 10:
-        return 'Powerhouse'
-    # Regola per le Powerhouse: poteri sovrannaturali, intelligenza non molto alta
-    elif row['power_source'] == 'Supernatural' and row['intelligence'] < 8:
-        return 'Powerhouse'
-    elif row['speed'] >= 7 and row['popularity'] < 8 and row['strength'] < 8:
-        return 'Specialist'
-    # Regola per gli Specialist: valori bilanciati
-    else:
-        return 'Specialist'
+# Converte l'attributo power_source in un valore numerico
+df['power_source_encoded'] = df['power_source'].astype('category').cat.codes
 
-# Applichiamo le regole per creare una nuova colonna 'predizione', in cui ad ogni supereroe viene assegnato il ruolo
-df['predizione'] = df.apply(sistema_esperto, axis=1) # lavora per ogni singola riga axis
+# Definite le variabili X (ruolo predetto), variabili y (ruolo effettivo)
+caratteristiche = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
+X = df[caratteristiche]
+y = df['role']
 
-# Calcolo dell'Accuratezza per confrontare la predizione con i ruoli reali
-acc = accuracy_score(df['role'], df['predizione'])
-print(f"\nAccuratezza del sistema sui 20 eroi: {acc * 100:.2f}%") #percentuale di risposte corrette
+# Decision Tree
+albero_esperto = DecisionTreeClassifier(
+    max_depth=3,
+    criterion='gini',
+    random_state=10
+)
 
-# Generazione della Matrice di Confusione
-classi_reali = df['role']
-classi_predette = df['predizione']
-labels = ['Leader', 'Powerhouse', 'Specialist'] # Ordine delle tre categorie
+# L'albero studia le relazioni numeriche nel file e genera le regole
+albero_esperto.fit(X, y)
 
-# Tabella
-cm = confusion_matrix(classi_reali, classi_predette, labels=labels)
+# Genera predizioni sul dataset
+df['predizione_albero'] = albero_esperto.predict(X)
 
-# Plottiamo la Matrice con Seaborn per renderla leggibile
-plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=labels, yticklabels=labels)
-plt.title('Matrice di Confusione - Validazione 20 Eroi')
-plt.ylabel('Ruolo Reale')
-plt.xlabel('Ruolo Predetto')
-plt.show()
+# Valuta l'accuratezza delle metriche
+accuratezza = accuracy_score(df['role'], df['predizione_albero'])
+
+print("=" * 60)
+print(f" ACCURATEZZA DEL MODELLO AUTOMATICO: {accuratezza * 100:.2f}%")
+print("=" * 60)
+
+print("\n CLASSIFICAZIONE ")
+print(classification_report(df['role'], df['predizione_albero']))
+
+# Rappresentazione Visiva
+regole_strutturate = export_text(
+    albero_esperto,
+    feature_names=caratteristiche
+)
+print("\n" + "=" * 20 + " Struttura Regole " + "=" * 20)
+print(regole_strutturate)
+print("=" * 67)
+
+# Controllo degli errori
+errori = df[df['role'] != df['predizione_albero']]
+if not errori.empty:
+    print(f"\n PERSONAGGI FUORI POSTO ({len(errori)})")
+    for index, row in errori.iterrows():
+        print(f"Eroe: {row['name']} | Ruolo del DataSet: {row['role']} | Ruolo predetto: {row['predizione_albero']}")
+else:
+    print("\n Accuratezza al 100%! ")
