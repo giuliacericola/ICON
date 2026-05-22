@@ -1,7 +1,8 @@
 import pandas as pd
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier, export_text
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-
+from sklearn.model_selection import cross_val_score, KFold
 
 # Carica DataSet
 df = pd.read_csv('DataSet/super_heroes.csv')
@@ -36,6 +37,21 @@ print("=" * 60)
 
 print("\n CLASSIFICAZIONE ")
 print(classification_report(df['role'], df['predizione_albero']))
+
+# Configurazione del k-fold: divide gli 80 eroi in 5 blocchi da 16 personaggi
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+
+# Accuratezza per ciascuna delle 5 simulazioni
+print("=" * 60)
+punteggi_cv = cross_val_score(albero_esperto, X, y, cv=kf, scoring='accuracy')
+print("\n" " RISULTATI CROSS-VALIDATION " )
+for i, score in enumerate(punteggi_cv, 1):
+    print(f" Simulazione {i} (su 16 eroi): {score * 100:.2f}%")
+print("\n")
+print(f" Accuratezza MEDIA Reale: {punteggi_cv.mean() * 100:.2f}%")
+print(f" Deviazione Standard : +/- {punteggi_cv.std() * 100:.2f}%")
+print("=" * 60)
+
 
 # Rappresentazione Visiva
 regole_strutturate = export_text(
