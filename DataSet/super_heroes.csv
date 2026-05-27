@@ -70,7 +70,7 @@ id,name,universe,strength,intelligence,speed,role,power_source,popularity
 69,Lobo,DC,9,7,7,Powerhouse,Supernatural,7
 70,Booster Gold,DC,6,7,8,Specialist,Technological_Weapon,7
 71,Red Hood,DC,6,8,7,Specialist,Technological_Weapon,8
-72,Deathstroke,DC,7,9,7,Specialist,Technological_Weapon,8
+72,Deathstroke,DC,7,9,7,Leader,Technological_Weapon,8
 73,John Stewart,DC,7,9,8,Leader,Supernatural,8
 74,Mister Miracle,DC,5,9,8,Specialist,Technological_Weapon,6
 75,Scarlet Witch,MC,5,8,7,Specialist,Supernatural,9
@@ -79,3 +79,53 @@ id,name,universe,strength,intelligence,speed,role,power_source,popularity
 78,Firestorm,DC,8,8,7,Powerhouse,Supernatural,6
 79,Static,DC,5,8,7,Specialist,Supernatural,7
 80,Constantine,DC,4,9,5,Specialist,Supernatural,7
+81,Blade,MC,7,7,8,Specialist,Supernatural,7
+82,Miles Morales,MC,7,7,9,Specialist,Supernatural,8
+83,Spider-Man 2099,MC,8,8,8,Specialist,Supernatural,7
+84,Spider-Gwen,MC,7,7,8,Specialist,Supernatural,8
+85,Winter Soldier,MC,7,8,7,Specialist,Technological_Weapon,8
+86,War Machine,MC,8,8,7,Powerhouse,Technological_Weapon,7
+87,Falcon (Sam),MC,6,8,8,Specialist,Technological_Weapon,7
+88,Shang-Chi,MC,6,8,8,Specialist,Supernatural,7
+89,Iron Fist,MC,6,8,7,Specialist,Supernatural,7
+90,Luke Cage (Classic),MC,8,6,5,Powerhouse,Supernatural,6
+91,Nova (Sam Alexander),MC,7,6,9,Powerhouse,Supernatural,6
+92,Ms Marvel (Kamala),MC,7,7,7,Specialist,Supernatural,8
+93,Captain Marvel,MC,10,8,9,Powerhouse,Supernatural,8
+94,Sentry,MC,10,7,9,Powerhouse,Supernatural,6
+95,Hyperion,MC,10,8,8,Powerhouse,Supernatural,6
+96,Gladiator,MC,10,7,9,Powerhouse,Supernatural,6
+97,Beta Ray Bill,MC,10,7,6,Powerhouse,Supernatural,6
+98,Hercules,MC,10,6,5,Powerhouse,Supernatural,6
+99,Namor,MC,9,8,8,Leader,Supernatural,7
+100,Black Bolt,MC,8,8,7,Leader,Supernatural,7
+101,Medusa,MC,6,8,6,Specialist,Supernatural,6
+102,Psylocke,MC,6,8,8,Specialist,Supernatural,7
+103,Cable,MC,8,9,7,Leader,Supernatural,7
+104,Bishop,MC,7,7,7,Specialist,Supernatural,6
+105,X-23,MC,7,7,8,Specialist,Supernatural,7
+106,Archangel,MC,7,6,8,Powerhouse,Supernatural,6
+107,Iceman,MC,8,7,7,Powerhouse,Supernatural,7
+108,Rogue,MC,8,7,7,Powerhouse,Supernatural,8
+109,Nightcrawler,MC,5,7,9,Specialist,Supernatural,8
+110,Kitty Pryde,MC,5,8,7,Specialist,Supernatural,7
+111,Emma Frost,MC,6,9,6,Specialist,Supernatural,7
+112,Blue Beetle,DC,7,8,8,Specialist,Technological_Weapon,7
+113,Booster Gold (Classic),DC,6,7,8,Specialist,Technological_Weapon,6
+114,Fire,DC,7,6,7,Specialist,Supernatural,5
+115,Ice,DC,6,7,6,Specialist,Supernatural,5
+116,Oracle,DC,3,10,4,Specialist,Technological_Weapon,8
+117,Batwing,DC,6,8,7,Specialist,Technological_Weapon,6
+118,Spoiler,DC,4,7,7,Specialist,Technological_Weapon,6
+119,Cassandra Cain,DC,5,7,8,Specialist,Technological_Weapon,7
+120,Huntress,DC,5,7,7,Specialist,Technological_Weapon,7
+121,The Question,DC,5,9,6,Specialist,Technological_Weapon,6
+122,Wildcat,DC,6,6,6,Specialist,Supernatural,6
+123,Hawk (Hank Hall),DC,8,5,6,Powerhouse,Supernatural,5
+124,Dove (Dawn Granger),DC,5,8,8,Specialist,Supernatural,5
+125,Starman,DC,7,8,7,Specialist,Supernatural,6
+126,Atom Smasher,DC,9,6,5,Powerhouse,Supernatural,6
+127,Cyclone,DC,6,7,8,Specialist,Supernatural,6
+128,Doctor Fate,DC,5,10,6,Leader,Supernatural,8
+129,Spectre,DC,10,9,7,Specialist,Supernatural,7
+130,Swamp Thing,DC,9,8,4,Powerhouse,Supernatural,7

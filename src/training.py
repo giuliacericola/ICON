@@ -16,6 +16,12 @@ def load_dataset(path):
 def preprocessing_dataset(df_input):
     df_input['power_source_encoded'] = df_input['power_source'].astype('category').cat.codes
     caratteristiche = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
+    # Se l'ontologia ha inserito i flag booleani, li aggiungiamo alle caratteristiche
+    if 'is_cosmic' in df_input.columns:
+        caratteristiche.append('is_cosmic')
+    if 'is_glass_cannon' in df_input.columns:
+        caratteristiche.append('is_glass_cannon')
+
     X = df_input[caratteristiche]
     y = df_input['role']
     return X, y
