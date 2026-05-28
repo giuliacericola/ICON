@@ -16,14 +16,14 @@ def load_dataset(path):
 # X definisce le caratteristiche e y il ruolo
 def preprocessing_dataset(df_input):
     df_input['power_source_encoded'] = df_input['power_source'].astype('category').cat.codes
-    caratteristiche = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
+    characteristic = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
 
     if 'is_cosmic' in df_input.columns:
-        caratteristiche.append('is_cosmic')
+        characteristic.append('is_cosmic')
     if 'is_glass_cannon' in df_input.columns:
-        caratteristiche.append('is_glass_cannon')
+        characteristic.append('is_glass_cannon')
 
-    X = df_input[caratteristiche]
+    X = df_input[characteristic]
     y = df_input['role']
     return X, y
 
@@ -36,42 +36,42 @@ def preprocessing_dataset(df_input):
 # La funzione inoltre mostra gli errori
 
 def decisiontree_classifier(X, y, df_originale):
-    albero_esperto = DecisionTreeClassifier(
+    decision_tree = DecisionTreeClassifier(
         max_depth=3,
         criterion='gini',
         random_state=10
     )
 
-    albero_esperto.fit(X, y)
+    decision_tree.fit(X, y)
 
     df_pred = df_originale.copy()
-    df_pred['predizione_albero'] = albero_esperto.predict(X)
+    df_pred['predizione_albero'] = decision_tree.predict(X)
 
-    accuratezza = accuracy_score(df_pred['role'], df_pred['predizione_albero'])
+    accurate = accuracy_score(df_pred['role'], df_pred['predizione_albero'])
 
     print("=" * 60)
-    print(f" ACCURATEZZA DEL MODELLO AUTOMATICO: {accuratezza * 100:.2f}%")
+    print(f" ACCURATEZZA DEL MODELLO AUTOMATICO: {accurate * 100:.2f}%")
     print("=" * 60)
 
     print("\n CLASSIFICAZIONE ")
     print(classification_report(df_pred['role'], df_pred['predizione_albero']))
 
-    caratteristiche = list(X.columns)
-    regole_strutturate = export_text(albero_esperto, feature_names=caratteristiche)
+    characteristic = list(X.columns)
+    rules = export_text(decision_tree, feature_names=characteristic)
     print("\n" + "=" * 20 + " Struttura Regole " + "=" * 20)
-    print(regole_strutturate)
+    print(rules)
     print("=" * 67)
 
-    errori = df_pred[df_pred['role'] != df_pred['predizione_albero']]
-    if not errori.empty:
-        print(f"\n PERSONAGGI FUORI POSTO ({len(errori)})")
-        for index, row in errori.iterrows():
+    errors = df_pred[df_pred['role'] != df_pred['predizione_albero']]
+    if not errors.empty:
+        print(f"\n PERSONAGGI FUORI POSTO ({len(errors)})")
+        for index, row in errors.iterrows():
             print(
                 f"Eroe: {row['name']} | Ruolo del DataSet: {row['role']} | Ruolo predetto: {row['predizione_albero']}")
     else:
         print("\n Accuratezza al 100%! ")
 
-    return albero_esperto
+    return decision_tree
 
 # Funzione che esegue la Cross-Validation e genera il grafico della curva di validazione.
 # Configurazione del k-fold: divide i 130 eroi in 5 blocchi da 26 personaggi
@@ -83,44 +83,44 @@ def decisiontree_classifier(X, y, df_originale):
 def run_cross_validation_and_plots(X, y):
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
-    albero_riferimento = DecisionTreeClassifier(max_depth=3, criterion='gini', random_state=10)
+    decision_tree = DecisionTreeClassifier(max_depth=3, criterion='gini', random_state=10)
 
     print("=" * 60)
-    punteggi_cv = cross_val_score(albero_riferimento, X, y, cv=kf, scoring='accuracy')
+    score_cv = cross_val_score(decision_tree, X, y, cv=kf, scoring='accuracy')
     print("\n RISULTATI CROSS-VALIDATION ")
-    for i, score in enumerate(punteggi_cv, 1):
+    for i, score in enumerate(score_cv, 1):
         print(f" Simulazione {i} (su 26 eroi): {score * 100:.2f}%")
     print("\n")
-    print(f" Accuratezza MEDIA Reale: {punteggi_cv.mean() * 100:.2f}%")
-    print(f" Deviazione Standard : +/- {punteggi_cv.std() * 100:.2f}%")
+    print(f" Accuratezza MEDIA Reale: {score_cv.mean() * 100:.2f}%")
+    print(f" Deviazione Standard : +/- {score_cv.std() * 100:.2f}%")
     print("=" * 60)
 
-    profondita_da_testare = [1, 2, 3, 4, 5]
-    acc_dataset_completo = []
+    depth_to_test = [1, 2, 3, 4, 5]
+    acc_complete_dataset = []
     acc_cross_validation = []
 
-    for depth in profondita_da_testare:
-        albero_temp = DecisionTreeClassifier(max_depth=depth, criterion='gini', random_state=10)
+    for depth in depth_to_test:
+        tree_temp = DecisionTreeClassifier(max_depth=depth, criterion='gini', random_state=10)
 
         # Accuratezza sul Data Set completo
-        albero_temp.fit(X, y)
-        pred_temp = albero_temp.predict(X)
+        tree_temp.fit(X, y)
+        pred_temp = tree_temp.predict(X)
         acc_comp = np.mean(pred_temp == y)
-        acc_dataset_completo.append(acc_comp * 100)
+        acc_complete_dataset.append(acc_comp * 100)
 
         # Accuratezza Cross-Validation
-        punteggi_cv_temp = cross_val_score(albero_temp, X, y, cv=kf, scoring='accuracy')
-        acc_cross_validation.append(punteggi_cv_temp.mean() * 100)
+        score_cv_temp = cross_val_score(tree_temp, X, y, cv=kf, scoring='accuracy')
+        acc_cross_validation.append(score_cv_temp.mean() * 100)
 
     # Disegno del grafico visivo
     plt.figure(figsize=(10, 6))
 
     # Linea del Dataset Completo (Training)
-    plt.plot(profondita_da_testare, acc_dataset_completo, marker='o', linewidth=2, color='green',
+    plt.plot(depth_to_test, acc_complete_dataset, marker='o', linewidth=2, color='green',
              label='DataSet (Training)')
 
     # Linea della Cross-Validation (Test)
-    plt.plot(profondita_da_testare, acc_cross_validation, marker='s', linewidth=2, color='orange',
+    plt.plot(depth_to_test, acc_cross_validation, marker='s', linewidth=2, color='orange',
              label='Cross-Validation (Test)')
 
     # Evidenziazione visiva del punto ottimale impostato a profondità 3
@@ -129,7 +129,7 @@ def run_cross_validation_and_plots(X, y):
     plt.title("Curva di Validazione: Dataset vs Cross-Validation", fontsize=14, fontweight='bold', pad=15)
     plt.xlabel("Profondità Massima dell'Albero (max_depth)", fontsize=12)
     plt.ylabel("Accuratezza (%)", fontsize=12)
-    plt.xticks(profondita_da_testare)
+    plt.xticks(depth_to_test)
     plt.ylim(50, 102)
     plt.grid(True, linestyle=':', alpha=0.6)
     plt.legend(fontsize=11, loc='lower right')
