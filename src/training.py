@@ -5,18 +5,19 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.model_selection import cross_val_score, KFold
 import matplotlib.pyplot as plt
 
-# Caricamento del file csv dal DataSet
+# Caricamento del file csv
 def load_dataset(path):
     return pd.read_csv(path)
 
 # Converte le stringhe in valori numerici
 # Parametro da passare come input della libreria pandas per inizializzare un DataSet
 # Input codificato correttamente aventi tutti gli attributi in valore numerico
+# Se l'ontologia ha inserito i flag booleani, li aggiungiamo alle caratteristiche
 # X definisce le caratteristiche e y il ruolo
 def preprocessing_dataset(df_input):
     df_input['power_source_encoded'] = df_input['power_source'].astype('category').cat.codes
     caratteristiche = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
-    # Se l'ontologia ha inserito i flag booleani, li aggiungiamo alle caratteristiche
+
     if 'is_cosmic' in df_input.columns:
         caratteristiche.append('is_cosmic')
     if 'is_glass_cannon' in df_input.columns:
@@ -73,7 +74,7 @@ def decisiontree_classifier(X, y, df_originale):
     return albero_esperto
 
 # Funzione che esegue la Cross-Validation e genera il grafico della curva di validazione.
-# Configurazione del k-fold: divide gli 80 eroi in 5 blocchi da 16 personaggi
+# Configurazione del k-fold: divide i 130 eroi in 5 blocchi da 26 personaggi
 # Albero di riferimento a profondità 3 per la stampa della cross-validation
 # Visualizzazione dei risultati ottenuti dalle varie simulazioni
 # Visualizzazione del grafico, nel quale vi sono due curve:
@@ -88,7 +89,7 @@ def run_cross_validation_and_plots(X, y):
     punteggi_cv = cross_val_score(albero_riferimento, X, y, cv=kf, scoring='accuracy')
     print("\n RISULTATI CROSS-VALIDATION ")
     for i, score in enumerate(punteggi_cv, 1):
-        print(f" Simulazione {i} (su 16 eroi): {score * 100:.2f}%")
+        print(f" Simulazione {i} (su 26 eroi): {score * 100:.2f}%")
     print("\n")
     print(f" Accuratezza MEDIA Reale: {punteggi_cv.mean() * 100:.2f}%")
     print(f" Deviazione Standard : +/- {punteggi_cv.std() * 100:.2f}%")
