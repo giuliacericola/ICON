@@ -193,12 +193,12 @@ def run_hybrid_cross_validation_and_plot(X, y, df_full):
         for i, idx in enumerate(test_idx):
             real_role = y.iloc[idx]
             predict_role = pred_tree_test[i]
-            ontology_role = df_full.loc[
-                idx, 'ontology_role'] if 'ontology_role' in df_full.columns else None
+            ruolo_ontologia = df_full.loc[
+                idx, 'ruolo_ontologia'] if 'ruolo_ontologia' in df_full.columns else None
 
             if predict_role != real_role:
                 # Se l'albero sbaglia, verifichiamo se l'ontologia ha la risposta corretta
-                if pd.notna(ontology_role) and ontology_role == real_role:
+                if pd.notna(ruolo_ontologia) and ruolo_ontologia == real_role:
                     ibrid += 1
             else:
                 ibrid += 1
