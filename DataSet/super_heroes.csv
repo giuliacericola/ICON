@@ -97,7 +97,7 @@ id,name,universe,strength,intelligence,speed,role,power_source,popularity
 96,Gladiator,MC,10,7,9,Powerhouse,Supernatural,6
 97,Beta Ray Bill,MC,10,7,6,Powerhouse,Supernatural,6
 98,Hercules,MC,10,6,5,Powerhouse,Supernatural,6
-99,Namor,MC,9,8,8,Leader,Supernatural,7
+99,Namor,MC,9,8,8,Leader,Supernatural,8
 100,Black Bolt,MC,8,8,7,Leader,Supernatural,7
 101,Medusa,MC,6,8,6,Specialist,Supernatural,6
 102,Psylocke,MC,6,8,8,Specialist,Supernatural,7
@@ -114,7 +114,7 @@ id,name,universe,strength,intelligence,speed,role,power_source,popularity
 113,Booster Gold (Classic),DC,6,7,8,Specialist,Technological_Weapon,6
 114,Fire,DC,7,6,7,Specialist,Supernatural,5
 115,Ice,DC,6,7,6,Specialist,Supernatural,5
-116,Oracle,DC,3,10,4,Specialist,Technological_Weapon,8
+116,Oracle,DC,3,10,4,Leader,Technological_Weapon,8
 117,Batwing,DC,6,8,7,Specialist,Technological_Weapon,6
 118,Spoiler,DC,4,7,7,Specialist,Technological_Weapon,6
 119,Cassandra Cain,DC,5,7,8,Specialist,Technological_Weapon,7
