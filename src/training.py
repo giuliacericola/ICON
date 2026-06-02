@@ -133,11 +133,11 @@ def run_cross_validation_and_plots(X, y):
 
     score_cv_pct = score_cv * 100
     sim = [
-        'Sim. 1\n(26 eroi)',
-        'Sim. 2\n(26 eroi)',
-        'Sim. 3\n(26 eroi)',
-        'Sim. 4\n(26 eroi)',
-        'Sim. 5\n(26 eroi)'
+        'Simulazione 1\n(26 eroi)',
+        'Simulazione 2\n(26 eroi)',
+        'Simulazione 3\n(26 eroi)',
+        'Simulazione 4\n(26 eroi)',
+        'Simulazione 5\n(26 eroi)'
     ]
 
     plt.figure(figsize=(10, 6))

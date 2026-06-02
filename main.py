@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from src import training, semantic_hero
+from src import training, semantic_hero, battle
 
 
 def main():
@@ -110,6 +110,13 @@ def main():
     training.run_hybrid_cross_validation_and_plot(X_orig, y_orig, dataset_arricchito)
 
     print("=" * 70)
+    print("\n" + "#" * 60)
+    print(" FINE FASE STRUTTURALE (Machine Learning & Logica Classica)")
+    print("#" * 60)
+
+
+    # Chiamiamo la funzione contenuta dentro il file battle.py
+    battle.query_responding(dataset_arricchito.to_dict('records'))
 
 
 if __name__ == "__main__":
