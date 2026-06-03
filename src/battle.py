@@ -49,6 +49,7 @@ def query_responding(dataset_completo):
         speed = support(row.get('speed'))
         strg = support(row.get('strength'))
         intel = support(row.get('intelligence'))
+        powers = support(row.get('power_source'))
 
         if pop <= 4:
             tracts.append("has_trait_low_profile")
@@ -63,6 +64,10 @@ def query_responding(dataset_completo):
 
         if intel >= 8:
             tracts.append("has_trait_tactician")
+
+        if powers == 'Technological_Weapon':
+            tracts.append("has_trait_TechonologicalWeapon")
+
 
         string_trats = " ".join(tracts)
 
@@ -93,6 +98,11 @@ def query_responding(dataset_completo):
             "descrizione": "Genera la coalizione ottimale Marvel (Powerhouse e Leader tattici) per contrastare la DC.",
             "stringa_target": "belongs_to_Marvel is_classified_as_Powerhouse has_trait_heavy_hitter is_classified_as_Leader has_trait_tactician"
         },
+        "3": {
+            "titolo": "LEADER IDEALE (Attacco Cyber)",
+            "descrizione": "Chi rispecchia maggiormente il ruolo di leader per fronteggiare un attacco cyber",
+            "stringa_target": "is_classified_as_Leader has_trait_tactician has_trait_TechonologicalWeapon"
+        }
 
     }
 
@@ -128,15 +138,21 @@ def query_responding(dataset_completo):
         # stampa ris
         print("\n" + "-" * 75)
         print(f" RISPOSTA ALLA QUERY SEMANTICA: {chosen_scenary['titolo']}")
-        print(f" Identikit Vettoriale Target: '{right_query}'")
+        print(f" Target: '{right_query}'")
         print("-" * 75)
 
-        if choose == "2":
+        if choose == "1":
+            print(" >> INFILTRAZIONE: Rilevato scenario ostile ad alto rischio visibilità.")
+            print(" >> ALGORITMO: Estrazione agenti furtivi...\n")
+            print(f" {'Membro Suggerito':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
+        elif choose == "2":
             print(" >> ALLERTA: Squadra nemica DC Comics in avvicinamento.")
             print(" >> ALGORITMO: Ottimizzazione della coalizione difensiva Marvel...\n")
-            print(f" {'Membro Reclutato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità Geometrica'}")
-        else:
-            print(f" {'Eroe Consigliato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità Geometrica'}")
+            print(f" {'Membro Reclutato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
+        elif choose == "3":
+            print(" >> CYBER ATTACK: Violazione dell'infrastruttura di rete rilevata.")
+            print(" >> ALGORITMO: Selezione di vertici di comando con feature tecnologiche...\n")
+            print(f" {'Leader Consigliato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
         print("-" * 75)
 
         c = 0
@@ -153,10 +169,19 @@ def query_responding(dataset_completo):
                 print(f" -> {info['nome']:<22} | {info['ruolo']:<15} | {info['universo']:<10} | {score * 100:.2f}%")
                 c += 1
 
-        if choose == "2":
+        if choose == "1":
+            print("-" * 75)
+            print(" ESITO SIMULAZIONE: Task-force a basso profilo identificata tramite minimizzazione d'angolo.")
+            print(" Parametri di mobilità e anonimato geometricamente soddisfatti.")
+        elif choose == "2":
             print("-" * 75)
             print(" ESITO SIMULAZIONE: Coerenza tattica della coalizione Marvel ottimizzata.")
             print(" Spazio degli Stati potato con successo tramite euristica geometrica.")
+        elif choose == "3":
+            print("-" * 75)
+            print(" ESITO SIMULAZIONE: Comando di difesa cyber strutturato con successo.")
+            print(" Intersezione di Feature logiche e armamenti tecnologici massimizzata.")
+
         print("=" * 75)
 
         input("\nPremere [INVIO] per tornare al menu delle query...")
