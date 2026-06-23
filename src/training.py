@@ -106,30 +106,34 @@ def run_cross_validation_and_plots(X, y):
         score_cv_temp = cross_val_score(tree_temp, X, y, cv=kf, scoring='accuracy')
         acc_cross_validation.append(score_cv_temp.mean() * 100)
 
-    # Disegno del grafico visivo
-    plt.figure(figsize=(10, 6))
+    print("Generazione grafico sulla scelta ottimale della profondità dell'albero...")
+    consent = input(">>Vuoi visualizzare il grafico? (s/n): ").strip().lower()
+    if consent == 's':
+        # Disegno del grafico visivo
+        plt.figure(figsize=(10, 6))
 
-    # Linea del Dataset Completo (Training)
-    plt.plot(depth_to_test, acc_complete_dataset, marker='o', linewidth=2, color='green',
-             label='DataSet (Training)')
+        # Linea del Dataset Completo (Training)
+        plt.plot(depth_to_test, acc_complete_dataset, marker='o', linewidth=2, color='green',
+                 label='DataSet (Training)')
 
-    # Linea della Cross-Validation (Test)
-    plt.plot(depth_to_test, acc_cross_validation, marker='s', linewidth=2, color='orange',
-             label='Cross-Validation (Test)')
+        # Linea della Cross-Validation (Test)
+        plt.plot(depth_to_test, acc_cross_validation, marker='s', linewidth=2, color='orange',
+                 label='Cross-Validation (Test)')
 
-    # Evidenziazione visiva del punto ottimale impostato a profondità 3
-    plt.axvline(x=3, color='red', linestyle='--', alpha=0.7, label='Scelta Corrente (Profondità = 3)')
+        # Evidenziazione visiva del punto ottimale impostato a profondità 3
+        plt.axvline(x=3, color='red', linestyle='--', alpha=0.7, label='Scelta Corrente (Profondità = 3)')
 
-    plt.title("Curva di Validazione: Dataset vs Cross-Validation", fontsize=14, fontweight='bold', pad=15)
-    plt.xlabel("Profondità Massima dell'Albero (max_depth)", fontsize=12)
-    plt.ylabel("Accuratezza (%)", fontsize=12)
-    plt.xticks(depth_to_test)
-    plt.ylim(50, 102)
-    plt.grid(True, linestyle=':', alpha=0.6)
-    plt.legend(fontsize=11, loc='lower right')
+        plt.title("Curva di Validazione: Dataset vs Cross-Validation", fontsize=14, fontweight='bold', pad=15)
+        plt.xlabel("Profondità Massima dell'Albero (max_depth)", fontsize=12)
+        plt.ylabel("Accuratezza (%)", fontsize=12)
+        plt.xticks(depth_to_test)
+        plt.ylim(50, 102)
+        plt.grid(True, linestyle=':', alpha=0.6)
+        plt.legend(fontsize=11, loc='lower right')
 
-    # Apertura finestra del grafico
-    plt.show()
+        # Apertura finestra del grafico
+        plt.show()
+    else: print("Visualizzazione grafico Annullata, il programma prosegue...")
 
     score_cv_pct = score_cv * 100
     sim = [
@@ -140,29 +144,33 @@ def run_cross_validation_and_plots(X, y):
         'Simulazione 5\n(26 eroi)'
     ]
 
-    plt.figure(figsize=(10, 6))
+    print("Generazione Grafico sull'accuratezza della Cross-Validation ")
+    consent = input(">>Vuoi visualizzare il grafico? (s/n): ").strip().lower()
+    if consent == 's':
+        plt.figure(figsize=(10, 6))
 
-    # Linea della CV
-    plt.plot(sim, score_cv_pct, marker='s', linewidth=2, color='orange',
-             label='Cross-Validation (Test Fold)')
+        # Linea della CV
+        plt.plot(sim, score_cv_pct, marker='s', linewidth=2, color='orange',
+                 label='Cross-Validation (Test Fold)')
 
-    # Linea della media reale della Cross-Validation
-    plt.axhline(y=score_cv.mean() * 100, color='red', linestyle='--', alpha=0.7,
-                label=f'Accuratezza Media Reale ({score_cv.mean() * 100:.2f}%)')
+        # Linea della media reale della Cross-Validation
+        plt.axhline(y=score_cv.mean() * 100, color='red', linestyle='--', alpha=0.7,
+                    label=f'Accuratezza Media Reale ({score_cv.mean() * 100:.2f}%)')
 
-    # Linea dell'accuratezza fissa dell'albero sul Dataset
-    plt.axhline(y=acc_complete_dataset[2], color='green', linestyle=':', alpha=0.7,
-                label=f'DataSet Completo (Training Base: {acc_complete_dataset[2]:.2f}%)')
+        # Linea dell'accuratezza fissa dell'albero sul Dataset
+        plt.axhline(y=acc_complete_dataset[2], color='green', linestyle=':', alpha=0.7,
+                    label=f'DataSet Completo (Training Base: {acc_complete_dataset[2]:.2f}%)')
 
-    plt.title("Comportamento della Cross-Validation nelle 5 Simulazioni di Test", fontsize=14, fontweight='bold', pad=15)
-    plt.xlabel("Numero di Eroi", fontsize=12)
-    plt.ylabel("Accuratezza (%)", fontsize=12)
-    plt.ylim(50, 102)
-    plt.grid(True, linestyle=':', alpha=0.6)
-    plt.legend(fontsize=11, loc='lower right')
+        plt.title("Comportamento della Cross-Validation nelle 5 Simulazioni di Test", fontsize=14, fontweight='bold', pad=15)
+        plt.xlabel("Numero di Eroi", fontsize=12)
+        plt.ylabel("Accuratezza (%)", fontsize=12)
+        plt.ylim(50, 102)
+        plt.grid(True, linestyle=':', alpha=0.6)
+        plt.legend(fontsize=11, loc='lower right')
 
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
+    else: print("Visualizzazione Grafico Annullata, il programma prosegue...")
 
 # Funzione che esegue una 5-Fold Cross-Validation simulando il comportamento della pipeline ibrida
 # Ad ogni fold l'albero predice e l'ontologia interviene a correggere gli errori
@@ -216,65 +224,70 @@ def run_hybrid_cross_validation_and_plot(X, y, df_full):
     print(f" Accuratezza MEDIA ML + Ontologia: {np.mean(score_mlo):.2f}%")
     print("=" * 60)
 
-    # Disegno del 3° Grafico: Confronto della Cross-Validation Ibrida
-    sim_heroes = ['Sim. 1\n(26 eroi)', 'Sim. 2\n(26 eroi)', 'Sim. 3\n(26 eroi)', 'Sim. 4\n(26 eroi)',
-                        'Sim. 5\n(26 eroi)']
+    print("Generazione Grafico: confronto delle curve di Cross_Validation ML vs ML+Ontologia")
+    consent = input(">>Vuoi visualizzare il grafico? (s/n): ").strip().lower()
+    if consent == 's':
+        # Disegno del 3° Grafico: Confronto della Cross-Validation Ibrida
+        sim_heroes = ['Sim. 1\n(26 eroi)', 'Sim. 2\n(26 eroi)', 'Sim. 3\n(26 eroi)', 'Sim. 4\n(26 eroi)',
+                            'Sim. 5\n(26 eroi)']
 
-    plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(10, 6))
 
-    # Curva della Cross-Validation Ml
-    plt.plot(sim_heroes, score_ml, marker='s', linewidth=2, color='orange',
-             label='Cross-Validation Classica (Solo ML)')
+        # Curva della Cross-Validation Ml
+        plt.plot(sim_heroes, score_ml, marker='s', linewidth=2, color='orange',
+                 label='Cross-Validation Classica (Solo ML)')
 
-    # Curva della Cross-Validation Ml+Ontologia
-    plt.plot(sim_heroes, score_mlo, marker='^', linewidth=2, color='red',
-             label='Cross-Validation Ibrida (ML + Ontologia)')
+        # Curva della Cross-Validation Ml+Ontologia
+        plt.plot(sim_heroes, score_mlo, marker='^', linewidth=2, color='red',
+                 label='Cross-Validation Ibrida (ML + Ontologia)')
 
-    plt.title("Andamento della Cross-Validation: Modello ML vs Modello Ibrido Semantico", fontsize=13,
-              fontweight='bold', pad=15)
-    plt.xlabel("Simulazioni di Test (Numero di Eroi)", fontsize=12)
-    plt.ylabel("Accuratezza (%)", fontsize=12)
-    plt.ylim(50, 105)
-    plt.grid(True, linestyle=':', alpha=0.6)
-    plt.legend(fontsize=11, loc='lower right')
+        plt.title("Andamento della Cross-Validation: Modello ML vs Modello Ibrido Semantico", fontsize=13,
+                  fontweight='bold', pad=15)
+        plt.xlabel("Simulazioni di Test (Numero di Eroi)", fontsize=12)
+        plt.ylabel("Accuratezza (%)", fontsize=12)
+        plt.ylim(50, 105)
+        plt.grid(True, linestyle=':', alpha=0.6)
+        plt.legend(fontsize=11, loc='lower right')
 
-    # Stampa i valori numerici
-    for i in range(len(sim_heroes)):
-        plt.text(sim_heroes[i], score_ml[i] - 3.5, f'{score_ml[i]:.1f}%', ha='center',
-                 color='orange', fontweight='bold')
-        plt.text(sim_heroes[i], score_mlo[i] + 1.5, f'{score_mlo[i]:.1f}%',
-                 ha='center', color='red', fontweight='bold')
+        # Stampa i valori numerici
+        for i in range(len(sim_heroes)):
+            plt.text(sim_heroes[i], score_ml[i] - 3.5, f'{score_ml[i]:.1f}%', ha='center',
+                     color='orange', fontweight='bold')
+            plt.text(sim_heroes[i], score_mlo[i] + 1.5, f'{score_mlo[i]:.1f}%',
+                     ha='center', color='red', fontweight='bold')
 
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
+    else: print("Visualizzazione Grafico Annullata, il programma prosegue...")
 
 # Genera un grafico a baree che confronta il numero di eroi indovinati dal Decision Tree e
 # il numero di eroi indovinati dal Decision Tree con l'aggiunta dell'ontologia
 def plot_heroes_comparison(heroes_dt_correct, heroes_hybrid_correct, total_heroes):
 
-    category = ['Eroi Indovinati\nda Decision Tree (ML)', 'Eroi Indovinati\nda ML + Ontologia']
-    values = [heroes_dt_correct, heroes_hybrid_correct]
-    colors = ['#ff7675', '#55efc4']
+    print("Generazione istogrammi a confronto: ML vs Ml+Ontologia. EROI INDOVINATI...")
+    consent = input(">>Vuoi visualizzare il grafico a barre? (s/n): ").strip().lower()
+    if consent == 's':
+        category = ['Eroi Indovinati\nda Decision Tree (ML)', 'Eroi Indovinati\nda ML + Ontologia']
+        values = [heroes_dt_correct, heroes_hybrid_correct]
+        colors = ['#ff7675', '#55efc4']
 
-    plt.figure(figsize=(8, 6))
+        plt.figure(figsize=(8, 6))
 
-    # Creazione delle barre (Corretto: rimosso l'argomento errato 'values=')
-    bars = plt.bar(category, values, color=colors, width=0.4, edgecolor='black', linewidth=1.2)
+        bars = plt.bar(category, values, color=colors, width=0.4, edgecolor='black', linewidth=1.2)
 
-    # Configurazione assi e titolo
-    plt.title("Impatto dell'Ontologia sul Numero di Eroi Classificati Correttamente", fontsize=13, fontweight='bold', pad=15)
-    plt.ylabel("Numero di Eroi (Conteggio Assoluto)", fontsize=12)
+        # Configurazione assi e titolo
+        plt.title("Impatto dell'Ontologia sul Numero di Eroi Classificati Correttamente", fontsize=13, fontweight='bold', pad=15)
+        plt.ylabel("Numero di Eroi (Conteggio Assoluto)", fontsize=12)
 
-    # Limite massimo dell'ordinata pari al totale degli eroi + un piccolo margine per il testo
-    plt.ylim(0, total_heroes + 15)
-    plt.grid(axis='y', linestyle=':', alpha=0.6)
+        plt.ylim(0, total_heroes + 15)
+        plt.grid(axis='y', linestyle=':', alpha=0.6)
 
-    # Inserisce il numero esatto sopra ogni bar
-    for b in bars:
-        height = b.get_height()
-        plt.text(b.get_x() + b.get_width() / 2.0, height + 2,
-                 f'{int(height)} / {total_heroes}',
-                 ha='center', va='bottom', fontsize=11, fontweight='bold')
+        for b in bars:
+            height = b.get_height()
+            plt.text(b.get_x() + b.get_width() / 2.0, height + 2,
+                     f'{int(height)} / {total_heroes}',
+                     ha='center', va='bottom', fontsize=11, fontweight='bold')
 
-    plt.tight_layout()
-    plt.show()
+        plt.tight_layout()
+        plt.show()
+    else: print("Visualizazione Grafica Annullata, il programma prosegue...")

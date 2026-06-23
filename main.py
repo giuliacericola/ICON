@@ -5,7 +5,7 @@ from src import training, semantic_hero, battle
 
 def main():
     print("=" * 70)
-    print("HEROES IN SUPER TRAINING")
+    print("HEROES IN SUPER-TRAINING")
     print("=" * 70)
 
     cartella_principale = os.path.dirname(os.path.abspath(__file__))
@@ -15,9 +15,7 @@ def main():
         print(f"[ERRORE] Dataset non trovato in: {dataset_path}")
         return
 
-    # =====================================================================
-    # 1° PARTE: MACHINE LEARNING PURO & STRUTTURA REGOLE (SOLO ML)
-    # =====================================================================
+
     print("\n>>> 1° PARTE: Esecuzione della componente statistica (Solo ML)...")
     dataset_originale = training.load_dataset(dataset_path)
     X_orig, y_orig = training.preprocessing_dataset(dataset_originale.copy())
@@ -31,10 +29,8 @@ def main():
     print("\n[INFO] 1° Parte completata con successo.")
     print("-" * 70)
 
-    # =====================================================================
-    # 2° PARTE: RAGIONAMENTO LOGICO SEMANTICO (ONTOLOGIA OWL)
-    # =====================================================================
-    print("\n>>> 2° PARTE: Connessione con la Background Knowledge (Ontologia)...")
+    # Inzio del ragionamento logico semantico
+    print("\n>>> 2° PARTE: Connessione con l'Ontologia...")
     semantic_hero.populate_ontology()
     semantic_results = semantic_hero.run_reasoning()
 
@@ -48,9 +44,7 @@ def main():
     print("\n Conoscenza estratta dall'ontologia e mappata sul dataset.")
     print("-" * 70)
 
-    # =====================================================================
-    # 3° PARTE: PIPELINE IBRIDA CON CORREZIONE A POSTERIORI (FALLIMENTI ML)
-    # =====================================================================
+    #Pipeline Ibrida sui fallimenti del ML
     print("\n>>> 3° PARTE: Attivazione della Pipeline Ibrida sui fallimenti del ML...")
 
     # Utilizziamo le predizioni dell'albero calcolato nella 1° parte sul dataset intero
@@ -99,14 +93,11 @@ def main():
     eroi_indovinati_ibrido = len(corretti)
     totale_personaggi = len(dataset_arricchito)
 
-    # Mostra il 3° Grafico: l'istogramma a barre verticali con il conteggio degli eroi salvati
+    # Mostra l'istogramma a barre verticali con il conteggio degli eroi salvati
     training.plot_heroes_comparison(eroi_indovinati_albero, eroi_indovinati_ibrido, totale_personaggi)
     print("-" * 70)
 
-    # =====================================================================
-    # 4° PARTE: CROSS-VALIDATION FINALE SULLA PIPELINE IBRIDA INTEGRATA
-    # =====================================================================
-    # Lancia il ciclo k-fold dinamico e mostra il 4° grafico a linee (Confronto CV)
+    # Lancia il ciclo k-fold dinamico e mostra il grafico
     training.run_hybrid_cross_validation_and_plot(X_orig, y_orig, dataset_arricchito)
 
     print("=" * 70)
@@ -114,10 +105,12 @@ def main():
     print(" FINE FASE STRUTTURALE (Machine Learning & Logica Classica)")
     print("#" * 60)
 
-
-    # Chiamiamo la funzione contenuta dentro il file battle.py
-    battle.query_responding(dataset_arricchito.to_dict('records'))
-
+    # Richiama il metodo di battle.py per avviare l'ultima fase
+    try:
+        battle.decision_system(dataset_arricchito.to_dict('records'))
+    except KeyboardInterrupt:
+        print("\n\n[INFO] Rilevata chiusura forzata dal sistema.")
+        print("=" * 70)
 
 if __name__ == "__main__":
     main()

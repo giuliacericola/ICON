@@ -11,7 +11,7 @@ def support(value, default=5):
     except (ValueError, TypeError):
         return default
 
-# Modulo avanzato di Question Answering e Simulazione di Battaglia Strategica.
+# Modulo avanzato di Decision System e Simulazione di Battaglia Strategica.
 # Riceve il dataset arricchito dal main, proietta la conoscenza nello Spazio
 # delle Feature e calcola le affinità semantiche tramite Coseno.
 # Recuperato il ruolo stabilito dall'ontologia (estratto nella parte precedente del progetto)
@@ -20,7 +20,7 @@ def support(value, default=5):
 # Vettorizzazione ed embedding, definiti gli scenari di query
 # Calcolo del coseno come euristica di matching
 # Stampa i risultati
-def query_responding(dataset_completo):
+def decision_system(dataset_completo):
 
     semantic_body = {}
     heroes_map = {}
@@ -100,7 +100,7 @@ def query_responding(dataset_completo):
         },
         "3": {
             "titolo": "LEADER IDEALE (Attacco Cyber)",
-            "descrizione": "Chi rispecchia maggiormente il ruolo di leader per fronteggiare un attacco cyber",
+            "descrizione": "Chi rispecchia maggiormente il ruolo di leader per fronteggiare un attacco cyber?",
             "stringa_target": "is_classified_as_Leader has_trait_tactician has_trait_TechonologicalWeapon"
         }
 
