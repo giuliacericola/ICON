@@ -119,7 +119,7 @@ def decision_system(dataset_completo):
         choose = input("\nInserisci il numero dello scenario desiderato: ").strip()
 
         if choose == "0":
-            print("\nChiusura del modulo di Question Answering")
+            print("\nChiusura del modulo Battle")
             print("=" * 75)
             break
 

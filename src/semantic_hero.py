@@ -16,6 +16,7 @@ def populate_ontology():
     df = pd.read_csv(PATH_CSV)
 
     with onto:
+
         for _, row in df.iterrows():
             original_name = row['name'].replace(" ", "_")
             eroe = onto.Character(original_name)
