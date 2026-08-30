@@ -15,7 +15,7 @@ def load_dataset(path):
 # X definisce le caratteristiche e y il ruolo
 def preprocessing_dataset(df_input):
     df_input['power_source_encoded'] = df_input['power_source'].astype('category').cat.codes
-    characteristic = ['strength', 'intelligence', 'speed', 'popularity', 'power_source_encoded']
+    characteristic = ['strength', 'intelligence', 'speed', 'power_source_encoded']
 
     X = df_input[characteristic]
     y = df_input['role']
