@@ -21,37 +21,37 @@ def populate_ontology():
     df = pd.read_csv(PATH_CSV)
 
     with onto:
-        # Singole istanze condivise
-        genio = onto.StrategicGenius("StrategicGenius_Single_Inst")
-        forza = onto.DevastatingForce("DevastatingForce_Single_Inst")
-        carisma = onto.Charismatic("Charismatic_Single_Inst")
+        # Individui-marcatore SOLO per la property chain (fonte di potere -> debolezza).
+        # Non esistono più marcatori per TacticalProfile/Reputation: StrategicGenius,
+        # DevastatingForce, Charismatic, Leader, Powerhouse sono ora dedotti
+        # interamente da HermiT tramite le soglie definite nella TBox (facet OWL),
+        # non più assegnati da un if/elif Python.
+        supernatural = onto.Supernatural("Supernatural_Single_Inst")
+        tech_weapon = onto.TechnologicalWeapon("TechnologicalWeapon_Single_Inst")
+        emp = onto.EMP("EMP_Single_Inst")
+        sigillo = onto.AntiMagicSeal("AntiMagicSeal_Single_Inst")
+
+        # Background knowledge asserita UNA SOLA VOLTA: da qui il reasoner deduce
+        # hasVulnerability di ogni eroe componendo hasPowerSource + hasWeakness.
+        tech_weapon.hasWeakness = [emp]
+        supernatural.hasWeakness = [sigillo]
 
         for _, row in df.iterrows():
             clean_name = row['name'].replace(" ", "_").replace("'", "").replace("-", "_")
             eroe = onto.Character(clean_name)
 
-            str_val = int(row['strength'])
-            intel_val = int(row['intelligence'])
-            pop_val = int(row['popularity'])
-
-            # Assegnazione Data Properties (Accettano liste di valori)
-            eroe.hasStrength = [str_val]
-            eroe.hasIntelligence = [intel_val]
+            # Unico compito di Python: caricare i dati grezzi del CSV così come sono.
+            # Nessuna soglia, nessuna decisione: la classificazione la fa solo HermiT.
+            eroe.hasStrength = [int(row['strength'])]
+            eroe.hasIntelligence = [int(row['intelligence'])]
             eroe.hasSpeed = [int(row['speed'])]
-            eroe.hasPopularity = [pop_val]
+            eroe.hasPopularity = [int(row['popularity'])]
 
-            # GESTIONE CORRETTA OBJECT PROPERTIES (Senza liste vuote)
-            if intel_val >= 8:
-                eroe.hasTacticalProfile = genio
-            elif str_val >= 7:
-                eroe.hasTacticalProfile = forza
+            power_raw = str(row.get('power_source', '')).strip()
+            if power_raw == 'Technological_Weapon':
+                eroe.hasPowerSource = [tech_weapon]
             else:
-                eroe.hasTacticalProfile = None
-
-            if pop_val >= 8:
-                eroe.hasReputation = carisma
-            else:
-                eroe.hasReputation = None
+                eroe.hasPowerSource = [supernatural]
 
     onto.save(file=PATH_POPULATED, format="rdfxml")
     print(f" ---> Popolamento completato! Generati individui per {len(df)} eroi.")
@@ -89,4 +89,11 @@ def run_reasoning():
         })
 
     print("---> Ragionamento completato! Nuova conoscenza semantica estratta con successo.")
+
+    # Prova diretta di ragionamento relazionale a più salti: nessun eroe è mai
+    # stato assegnato esplicitamente a EMPTarget, è dedotto componendo
+    # hasPowerSource + hasWeakness (property chain).
+    bersagli_emp = [c.name.replace("_", " ") for c in onto.EMPTarget.instances()]
+    print(f"[Deduzione] Eroi dedotti vulnerabili a EMP (mai assegnati esplicitamente): {len(bersagli_emp)}")
+
     return semantic_results

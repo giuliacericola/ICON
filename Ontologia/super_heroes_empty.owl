@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/franc/ontologies/2026/7/untitled-ontology-22"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/franc/ontologies/2026/7/untitled-ontology-22">
+    <Prefix name="" IRI="http://www.semanticweb.org/franc/ontologies/2026/7/untitled-ontology-22/"/>
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+
+    <!-- ===================== Declarations ===================== -->
+
+    <Declaration><Class IRI="#Character"/></Declaration>
+    <Declaration><Class IRI="#Leader"/></Declaration>
+    <Declaration><Class IRI="#Powerhouse"/></Declaration>
+    <Declaration><Class IRI="#Specialist"/></Declaration>
+    <Declaration><Class IRI="#TacticalProfile"/></Declaration>
+    <Declaration><Class IRI="#StrategicGenius"/></Declaration>
+    <Declaration><Class IRI="#DevastatingForce"/></Declaration>
+    <Declaration><Class IRI="#Reputation"/></Declaration>
+    <Declaration><Class IRI="#Charismatic"/></Declaration>
+    <Declaration><Class IRI="#LowProfile"/></Declaration>
+    <Declaration><Class IRI="#MediumReputation"/></Declaration>
+    <Declaration><Class IRI="#Universe"/></Declaration>
+    <Declaration><Class IRI="#DC"/></Declaration>
+    <Declaration><Class IRI="#MC"/></Declaration>
+    <Declaration><Class IRI="#PowerSource"/></Declaration>
+    <Declaration><Class IRI="#Supernatural"/></Declaration>
+    <Declaration><Class IRI="#TechnologicalWeapon"/></Declaration>
+    <Declaration><Class IRI="#Weakness"/></Declaration>
+    <Declaration><Class IRI="#EMP"/></Declaration>
+    <Declaration><Class IRI="#AntiMagicSeal"/></Declaration>
+    <Declaration><Class IRI="#EMPTarget"/></Declaration>
+
+    <Declaration><ObjectProperty IRI="#hasPowerSource"/></Declaration>
+    <Declaration><ObjectProperty IRI="#hasUniverse"/></Declaration>
+    <Declaration><ObjectProperty IRI="#hasWeakness"/></Declaration>
+    <Declaration><ObjectProperty IRI="#hasVulnerability"/></Declaration>
+
+    <Declaration><DataProperty IRI="#hasIntelligence"/></Declaration>
+    <Declaration><DataProperty IRI="#hasStrength"/></Declaration>
+    <Declaration><DataProperty IRI="#hasSpeed"/></Declaration>
+    <Declaration><DataProperty IRI="#hasPopularity"/></Declaration>
+
+    <!-- ===================== Ruoli tattici (ora 100% dedotti da HermiT) =====================
+         Nessuna soglia calcolata in Python: hasIntelligence/hasStrength/hasPopularity sono
+         SOLO dati grezzi caricati dal CSV. Tutta la classificazione avviene qui, tramite
+         DataSomeValuesFrom con facet numerici (minInclusive). -->
+
+    <!-- StrategicGenius ≡ Character ⊓ ∃hasIntelligence.[>=8] -->
+    <EquivalentClasses>
+        <Class IRI="#StrategicGenius"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#hasIntelligence"/>
+                <DatatypeRestriction>
+                    <Datatype abbreviatedIRI="xsd:integer"/>
+                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                    </FacetRestriction>
+                </DatatypeRestriction>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <!-- DevastatingForce ≡ Character ⊓ ∃hasStrength.[>=7] -->
+    <EquivalentClasses>
+        <Class IRI="#DevastatingForce"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#hasStrength"/>
+                <DatatypeRestriction>
+                    <Datatype abbreviatedIRI="xsd:integer"/>
+                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+                    </FacetRestriction>
+                </DatatypeRestriction>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <!-- Charismatic ≡ Character ⊓ ∃hasPopularity.[>=8] -->
+    <EquivalentClasses>
+        <Class IRI="#Charismatic"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <DataSomeValuesFrom>
+                <DataProperty IRI="#hasPopularity"/>
+                <DatatypeRestriction>
+                    <Datatype abbreviatedIRI="xsd:integer"/>
+                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                    </FacetRestriction>
+                </DatatypeRestriction>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <!-- Leader ≡ StrategicGenius ⊓ Charismatic -->
+    <EquivalentClasses>
+        <Class IRI="#Leader"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#StrategicGenius"/>
+            <Class IRI="#Charismatic"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <!-- Powerhouse ≡ DevastatingForce ⊓ ¬StrategicGenius
+         Il complemento è ESPLICITO qui, nella TBox: non serve più che Python
+         "si ricordi" di non assegnare mai le due categorie insieme. Se un eroe
+         soddisfacesse entrambe le condizioni numeriche, HermiT lo classifica
+         Leader (se anche Charismatic) o nessuno dei due (mai un conflitto). -->
+    <EquivalentClasses>
+        <Class IRI="#Powerhouse"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#DevastatingForce"/>
+            <ObjectComplementOf>
+                <Class IRI="#StrategicGenius"/>
+            </ObjectComplementOf>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <SubClassOf><Class IRI="#Leader"/><Class IRI="#Character"/></SubClassOf>
+    <SubClassOf><Class IRI="#Powerhouse"/><Class IRI="#Character"/></SubClassOf>
+    <SubClassOf><Class IRI="#Specialist"/><Class IRI="#Character"/></SubClassOf>
+    <SubClassOf><Class IRI="#StrategicGenius"/><Class IRI="#TacticalProfile"/></SubClassOf>
+    <SubClassOf><Class IRI="#DevastatingForce"/><Class IRI="#TacticalProfile"/></SubClassOf>
+    <SubClassOf><Class IRI="#Charismatic"/><Class IRI="#Reputation"/></SubClassOf>
+    <SubClassOf><Class IRI="#LowProfile"/><Class IRI="#Reputation"/></SubClassOf>
+    <SubClassOf><Class IRI="#MediumReputation"/><Class IRI="#Reputation"/></SubClassOf>
+    <SubClassOf><Class IRI="#DC"/><Class IRI="#Universe"/></SubClassOf>
+    <SubClassOf><Class IRI="#MC"/><Class IRI="#Universe"/></SubClassOf>
+    <SubClassOf><Class IRI="#Supernatural"/><Class IRI="#PowerSource"/></SubClassOf>
+    <SubClassOf><Class IRI="#TechnologicalWeapon"/><Class IRI="#PowerSource"/></SubClassOf>
+    <SubClassOf><Class IRI="#EMP"/><Class IRI="#Weakness"/></SubClassOf>
+    <SubClassOf><Class IRI="#AntiMagicSeal"/><Class IRI="#Weakness"/></SubClassOf>
+    <SubClassOf><Class IRI="#EMPTarget"/><Class IRI="#Character"/></SubClassOf>
+
+    <!-- PROPERTY CHAIN (invariata): hasPowerSource o hasWeakness -> hasVulnerability -->
+    <EquivalentClasses>
+        <Class IRI="#EMPTarget"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasVulnerability"/>
+                <Class IRI="#EMP"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+
+    <DisjointClasses>
+        <Class IRI="#Charismatic"/>
+        <Class IRI="#LowProfile"/>
+        <Class IRI="#MediumReputation"/>
+    </DisjointClasses>
+    <DisjointClasses><Class IRI="#DC"/><Class IRI="#MC"/></DisjointClasses>
+    <DisjointClasses><Class IRI="#Supernatural"/><Class IRI="#TechnologicalWeapon"/></DisjointClasses>
+    <DisjointClasses><Class IRI="#EMP"/><Class IRI="#AntiMagicSeal"/></DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#Leader"/>
+        <Class IRI="#Powerhouse"/>
+        <Class IRI="#Specialist"/>
+    </DisjointClasses>
+
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasPowerSource"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasUniverse"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#hasWeakness"/>
+        <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
+    </SubObjectPropertyOf>
+
+    <SubObjectPropertyOf>
+        <ObjectPropertyChain>
+            <ObjectProperty IRI="#hasPowerSource"/>
+            <ObjectProperty IRI="#hasWeakness"/>
+        </ObjectPropertyChain>
+        <ObjectProperty IRI="#hasVulnerability"/>
+    </SubObjectPropertyOf>
+
+    <ObjectPropertyDomain><ObjectProperty IRI="#hasPowerSource"/><Class IRI="#Character"/></ObjectPropertyDomain>
+    <ObjectPropertyDomain><ObjectProperty IRI="#hasUniverse"/><Class IRI="#Character"/></ObjectPropertyDomain>
+    <ObjectPropertyDomain><ObjectProperty IRI="#hasWeakness"/><Class IRI="#PowerSource"/></ObjectPropertyDomain>
+    <ObjectPropertyDomain><ObjectProperty IRI="#hasVulnerability"/><Class IRI="#Character"/></ObjectPropertyDomain>
+
+    <ObjectPropertyRange><ObjectProperty IRI="#hasPowerSource"/><Class IRI="#PowerSource"/></ObjectPropertyRange>
+    <ObjectPropertyRange><ObjectProperty IRI="#hasUniverse"/><Class IRI="#Universe"/></ObjectPropertyRange>
+    <ObjectPropertyRange><ObjectProperty IRI="#hasWeakness"/><Class IRI="#Weakness"/></ObjectPropertyRange>
+    <ObjectPropertyRange><ObjectProperty IRI="#hasVulnerability"/><Class IRI="#Weakness"/></ObjectPropertyRange>
+
+    <SubDataPropertyOf><DataProperty IRI="#hasIntelligence"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
+    <SubDataPropertyOf><DataProperty IRI="#hasStrength"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
+    <SubDataPropertyOf><DataProperty IRI="#hasSpeed"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
+    <SubDataPropertyOf><DataProperty IRI="#hasPopularity"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
+
+    <DataPropertyDomain><DataProperty IRI="#hasIntelligence"/><Class IRI="#Character"/></DataPropertyDomain>
+    <DataPropertyDomain><DataProperty IRI="#hasStrength"/><Class IRI="#Character"/></DataPropertyDomain>
+    <DataPropertyDomain><DataProperty IRI="#hasSpeed"/><Class IRI="#Character"/></DataPropertyDomain>
+    <DataPropertyDomain><DataProperty IRI="#hasPopularity"/><Class IRI="#Character"/></DataPropertyDomain>
+
+    <DataPropertyRange><DataProperty IRI="#hasIntelligence"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
+    <DataPropertyRange><DataProperty IRI="#hasStrength"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
+    <DataPropertyRange><DataProperty IRI="#hasSpeed"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
+    <DataPropertyRange><DataProperty IRI="#hasPopularity"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
+
+</Ontology>
+
+
+
+<!-- v3: soglie Leader/Powerhouse/StrategicGenius/DevastatingForce/Charismatic ora
+     100% dedotte da HermiT tramite facet sui Data Property (nessuna soglia in
+     Python). Powerhouse esclude esplicitamente StrategicGenius nella TBox stessa:
+     la disgiunzione con Leader è garantita dalla logica, non dal codice.
+     Rimosse hasTacticalProfile/hasReputation e i relativi individui-marcatore:
+     non più necessari, la classificazione non passa più per un object property
+     "pre-calcolato" da Python. -->
