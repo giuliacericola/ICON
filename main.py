@@ -79,7 +79,7 @@ def main():
     accuratezza_ibrida = len(corretti) / len(dataset_arricchito)
 
     print("=" * 60)
-    print(f" NUMERO DI INTERVENTI CORRETTIVI DELL'ONTOLOGIA: {interventi_ontologia}")
+    print(f" NUMERO DI FALLIMENTI DELL'ONTOLOGIA: {interventi_ontologia}")
     print(f" ACCURATEZZA FINALE DELLA PIPELINE IBRIDA: {accuratezza_ibrida * 100:.2f}%")
     print("=" * 60)
 
