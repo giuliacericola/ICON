@@ -12,55 +12,103 @@
     <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
     <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
     <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
-
-    <!-- ===================== Declarations ===================== -->
-
-    <Declaration><Class IRI="#Character"/></Declaration>
-    <Declaration><Class IRI="#Leader"/></Declaration>
-    <Declaration><Class IRI="#Powerhouse"/></Declaration>
-    <Declaration><Class IRI="#Specialist"/></Declaration>
-
-    <Declaration><Class IRI="#TacticalProfile"/></Declaration>
-    <Declaration><Class IRI="#StrategicGenius"/></Declaration>
-    <Declaration><Class IRI="#DevastatingForce"/></Declaration>
-    <Declaration><Class IRI="#HighMobility"/></Declaration>
-    <Declaration><Class IRI="#HeavyHitter"/></Declaration>
-
-    <Declaration><Class IRI="#Reputation"/></Declaration>
-    <Declaration><Class IRI="#Charismatic"/></Declaration>
-    <Declaration><Class IRI="#LowProfile"/></Declaration>
-    <Declaration><Class IRI="#MediumReputation"/></Declaration>
-
-    <Declaration><Class IRI="#Universe"/></Declaration>
-    <Declaration><Class IRI="#DC"/></Declaration>
-    <Declaration><Class IRI="#MC"/></Declaration>
-
-    <Declaration><Class IRI="#PowerSource"/></Declaration>
-    <Declaration><Class IRI="#Supernatural"/></Declaration>
-    <Declaration><Class IRI="#TechnologicalWeapon"/></Declaration>
-
-    <Declaration><Class IRI="#Weakness"/></Declaration>
-    <Declaration><Class IRI="#EMP"/></Declaration>
-    <Declaration><Class IRI="#AntiMagicSeal"/></Declaration>
-    <Declaration><Class IRI="#EMPTarget"/></Declaration>
-
-    <Declaration><ObjectProperty IRI="#hasPowerSource"/></Declaration>
-    <Declaration><ObjectProperty IRI="#hasUniverse"/></Declaration>
-    <Declaration><ObjectProperty IRI="#hasWeakness"/></Declaration>
-    <Declaration><ObjectProperty IRI="#hasVulnerability"/></Declaration>
-
-    <Declaration><DataProperty IRI="#hasIntelligence"/></Declaration>
-    <Declaration><DataProperty IRI="#hasStrength"/></Declaration>
-    <Declaration><DataProperty IRI="#hasSpeed"/></Declaration>
-    <Declaration><DataProperty IRI="#hasPopularity"/></Declaration>
-
-    <!-- ===================== Definizione Tratti (Membri di TacticalProfile e Reputation) ===================== -->
-
-    <!-- StrategicGenius ≡ ∃hasIntelligence.[>=8] -->
-    <EquivalentClasses>
+    <Declaration>
+        <Class IRI="#AntiMagicSeal"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Character"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Charismatic"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DC"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#DevastatingForce"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EMP"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#EMPTarget"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HeavyHitter"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#HighMobility"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Leader"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#LowProfile"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MC"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#MediumReputation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#PowerSource"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Powerhouse"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Reputation"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Specialist"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#StrategicGenius"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Supernatural"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TacticalProfile"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#TechnologicalWeapon"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Universe"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Weakness"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasPowerSource"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasUniverse"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasVulnerability"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#hasWeakness"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasIntelligence"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasPopularity"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasSpeed"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty IRI="#hasStrength"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#Charismatic"/>
         <DataSomeValuesFrom>
-            <DataProperty IRI="#hasIntelligence"/>
+            <DataProperty IRI="#hasPopularity"/>
             <DatatypeRestriction>
                 <Datatype abbreviatedIRI="xsd:integer"/>
                 <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
@@ -69,8 +117,6 @@
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- DevastatingForce ≡ ∃hasStrength.[>=7] -->
     <EquivalentClasses>
         <Class IRI="#DevastatingForce"/>
         <DataSomeValuesFrom>
@@ -83,22 +129,16 @@
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- HighMobility ≡ ∃hasSpeed.[>=7] -->
     <EquivalentClasses>
-        <Class IRI="#HighMobility"/>
-        <DataSomeValuesFrom>
-            <DataProperty IRI="#hasSpeed"/>
-            <DatatypeRestriction>
-                <Datatype abbreviatedIRI="xsd:integer"/>
-                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
-                </FacetRestriction>
-            </DatatypeRestriction>
-        </DataSomeValuesFrom>
+        <Class IRI="#EMPTarget"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasVulnerability"/>
+                <Class IRI="#EMP"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
     </EquivalentClasses>
-
-    <!-- HeavyHitter ≡ ∃hasStrength.[>=8] -->
     <EquivalentClasses>
         <Class IRI="#HeavyHitter"/>
         <DataSomeValuesFrom>
@@ -111,22 +151,26 @@
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- Charismatic ≡ ∃hasPopularity.[>=8] -->
     <EquivalentClasses>
-        <Class IRI="#Charismatic"/>
+        <Class IRI="#HighMobility"/>
         <DataSomeValuesFrom>
-            <DataProperty IRI="#hasPopularity"/>
+            <DataProperty IRI="#hasSpeed"/>
             <DatatypeRestriction>
                 <Datatype abbreviatedIRI="xsd:integer"/>
                 <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
                 </FacetRestriction>
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- LowProfile ≡ ∃hasPopularity.[<=4] -->
+    <EquivalentClasses>
+        <Class IRI="#Leader"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <Class IRI="#Charismatic"/>
+            <Class IRI="#StrategicGenius"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#LowProfile"/>
         <DataSomeValuesFrom>
@@ -139,20 +183,6 @@
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- ===================== Definizione Ruoli (Sottoclassi Dirette di Character) ===================== -->
-
-    <!-- Leader ≡ Character ⊓ StrategicGenius ⊓ Charismatic -->
-    <EquivalentClasses>
-        <Class IRI="#Leader"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#Character"/>
-            <Class IRI="#StrategicGenius"/>
-            <Class IRI="#Charismatic"/>
-        </ObjectIntersectionOf>
-    </EquivalentClasses>
-
-    <!-- Powerhouse ≡ Character ⊓ DevastatingForce ⊓ ¬StrategicGenius -->
     <EquivalentClasses>
         <Class IRI="#Powerhouse"/>
         <ObjectIntersectionOf>
@@ -163,58 +193,108 @@
             </ObjectComplementOf>
         </ObjectIntersectionOf>
     </EquivalentClasses>
-
-    <!-- EMPTarget ≡ Character ⊓ ∃hasVulnerability.EMP -->
     <EquivalentClasses>
-        <Class IRI="#EMPTarget"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#Character"/>
-            <ObjectSomeValuesFrom>
-                <ObjectProperty IRI="#hasVulnerability"/>
-                <Class IRI="#EMP"/>
-            </ObjectSomeValuesFrom>
-        </ObjectIntersectionOf>
+        <Class IRI="#StrategicGenius"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasIntelligence"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
     </EquivalentClasses>
-
-    <!-- ===================== Gerarchia esplicita (SubClassOf) ===================== -->
-
-    <SubClassOf><Class IRI="#Leader"/><Class IRI="#Character"/></SubClassOf>
-    <SubClassOf><Class IRI="#Powerhouse"/><Class IRI="#Character"/></SubClassOf>
-    <SubClassOf><Class IRI="#Specialist"/><Class IRI="#Character"/></SubClassOf>
-
-    <SubClassOf><Class IRI="#StrategicGenius"/><Class IRI="#TacticalProfile"/></SubClassOf>
-    <SubClassOf><Class IRI="#DevastatingForce"/><Class IRI="#TacticalProfile"/></SubClassOf>
-    <SubClassOf><Class IRI="#HighMobility"/><Class IRI="#TacticalProfile"/></SubClassOf>
-    <SubClassOf><Class IRI="#HeavyHitter"/><Class IRI="#TacticalProfile"/></SubClassOf>
-
-    <SubClassOf><Class IRI="#Charismatic"/><Class IRI="#Reputation"/></SubClassOf>
-    <SubClassOf><Class IRI="#LowProfile"/><Class IRI="#Reputation"/></SubClassOf>
-    <SubClassOf><Class IRI="#MediumReputation"/><Class IRI="#Reputation"/></SubClassOf>
-
-    <SubClassOf><Class IRI="#DC"/><Class IRI="#Universe"/></SubClassOf>
-    <SubClassOf><Class IRI="#MC"/><Class IRI="#Universe"/></SubClassOf>
-    <SubClassOf><Class IRI="#Supernatural"/><Class IRI="#PowerSource"/></SubClassOf>
-    <SubClassOf><Class IRI="#TechnologicalWeapon"/><Class IRI="#PowerSource"/></SubClassOf>
-    <SubClassOf><Class IRI="#EMP"/><Class IRI="#Weakness"/></SubClassOf>
-    <SubClassOf><Class IRI="#AntiMagicSeal"/><Class IRI="#Weakness"/></SubClassOf>
-    <SubClassOf><Class IRI="#EMPTarget"/><Class IRI="#Character"/></SubClassOf>
-
-    <!-- Disgiunzioni -->
+    <SubClassOf>
+        <Class IRI="#AntiMagicSeal"/>
+        <Class IRI="#Weakness"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Charismatic"/>
+        <Class IRI="#Reputation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DC"/>
+        <Class IRI="#Universe"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#DevastatingForce"/>
+        <Class IRI="#TacticalProfile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EMP"/>
+        <Class IRI="#Weakness"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#EMPTarget"/>
+        <Class IRI="#Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HeavyHitter"/>
+        <Class IRI="#TacticalProfile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#HighMobility"/>
+        <Class IRI="#TacticalProfile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Leader"/>
+        <Class IRI="#Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#LowProfile"/>
+        <Class IRI="#Reputation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MC"/>
+        <Class IRI="#Universe"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#MediumReputation"/>
+        <Class IRI="#Reputation"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Powerhouse"/>
+        <Class IRI="#Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Specialist"/>
+        <Class IRI="#Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#StrategicGenius"/>
+        <Class IRI="#TacticalProfile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Supernatural"/>
+        <Class IRI="#PowerSource"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#TechnologicalWeapon"/>
+        <Class IRI="#PowerSource"/>
+    </SubClassOf>
+    <DisjointClasses>
+        <Class IRI="#AntiMagicSeal"/>
+        <Class IRI="#EMP"/>
+    </DisjointClasses>
     <DisjointClasses>
         <Class IRI="#Charismatic"/>
         <Class IRI="#LowProfile"/>
         <Class IRI="#MediumReputation"/>
     </DisjointClasses>
-    <DisjointClasses><Class IRI="#DC"/><Class IRI="#MC"/></DisjointClasses>
-    <DisjointClasses><Class IRI="#Supernatural"/><Class IRI="#TechnologicalWeapon"/></DisjointClasses>
-    <DisjointClasses><Class IRI="#EMP"/><Class IRI="#AntiMagicSeal"/></DisjointClasses>
+    <DisjointClasses>
+        <Class IRI="#DC"/>
+        <Class IRI="#MC"/>
+    </DisjointClasses>
     <DisjointClasses>
         <Class IRI="#Leader"/>
         <Class IRI="#Powerhouse"/>
         <Class IRI="#Specialist"/>
     </DisjointClasses>
-
-    <!-- Proprietà -->
+    <DisjointClasses>
+        <Class IRI="#Supernatural"/>
+        <Class IRI="#TechnologicalWeapon"/>
+    </DisjointClasses>
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#hasPowerSource"/>
         <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
@@ -227,7 +307,38 @@
         <ObjectProperty IRI="#hasWeakness"/>
         <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
     </SubObjectPropertyOf>
-
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasPowerSource"/>
+        <Class IRI="#Character"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasUniverse"/>
+        <Class IRI="#Character"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasVulnerability"/>
+        <Class IRI="#Character"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty IRI="#hasWeakness"/>
+        <Class IRI="#PowerSource"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasPowerSource"/>
+        <Class IRI="#PowerSource"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasUniverse"/>
+        <Class IRI="#Universe"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasVulnerability"/>
+        <Class IRI="#Weakness"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty IRI="#hasWeakness"/>
+        <Class IRI="#Weakness"/>
+    </ObjectPropertyRange>
     <SubObjectPropertyOf>
         <ObjectPropertyChain>
             <ObjectProperty IRI="#hasPowerSource"/>
@@ -235,30 +346,57 @@
         </ObjectPropertyChain>
         <ObjectProperty IRI="#hasVulnerability"/>
     </SubObjectPropertyOf>
-
-    <ObjectPropertyDomain><ObjectProperty IRI="#hasPowerSource"/><Class IRI="#Character"/></ObjectPropertyDomain>
-    <ObjectPropertyDomain><ObjectProperty IRI="#hasUniverse"/><Class IRI="#Character"/></ObjectPropertyDomain>
-    <ObjectPropertyDomain><ObjectProperty IRI="#hasWeakness"/><Class IRI="#PowerSource"/></ObjectPropertyDomain>
-    <ObjectPropertyDomain><ObjectProperty IRI="#hasVulnerability"/><Class IRI="#Character"/></ObjectPropertyDomain>
-
-    <ObjectPropertyRange><ObjectProperty IRI="#hasPowerSource"/><Class IRI="#PowerSource"/></ObjectPropertyRange>
-    <ObjectPropertyRange><ObjectProperty IRI="#hasUniverse"/><Class IRI="#Universe"/></ObjectPropertyRange>
-    <ObjectPropertyRange><ObjectProperty IRI="#hasWeakness"/><Class IRI="#Weakness"/></ObjectPropertyRange>
-    <ObjectPropertyRange><ObjectProperty IRI="#hasVulnerability"/><Class IRI="#Weakness"/></ObjectPropertyRange>
-
-    <SubDataPropertyOf><DataProperty IRI="#hasIntelligence"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
-    <SubDataPropertyOf><DataProperty IRI="#hasStrength"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
-    <SubDataPropertyOf><DataProperty IRI="#hasSpeed"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
-    <SubDataPropertyOf><DataProperty IRI="#hasPopularity"/><DataProperty abbreviatedIRI="owl:topDataProperty"/></SubDataPropertyOf>
-
-    <DataPropertyDomain><DataProperty IRI="#hasIntelligence"/><Class IRI="#Character"/></DataPropertyDomain>
-    <DataPropertyDomain><DataProperty IRI="#hasStrength"/><Class IRI="#Character"/></DataPropertyDomain>
-    <DataPropertyDomain><DataProperty IRI="#hasSpeed"/><Class IRI="#Character"/></DataPropertyDomain>
-    <DataPropertyDomain><DataProperty IRI="#hasPopularity"/><Class IRI="#Character"/></DataPropertyDomain>
-
-    <DataPropertyRange><DataProperty IRI="#hasIntelligence"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
-    <DataPropertyRange><DataProperty IRI="#hasStrength"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
-    <DataPropertyRange><DataProperty IRI="#hasSpeed"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
-    <DataPropertyRange><DataProperty IRI="#hasPopularity"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
-
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasIntelligence"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasPopularity"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasSpeed"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty IRI="#hasStrength"/>
+        <DataProperty abbreviatedIRI="owl:topDataProperty"/>
+    </SubDataPropertyOf>
+    <DataPropertyDomain>
+        <DataProperty IRI="#hasIntelligence"/>
+        <Class IRI="#Character"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#hasPopularity"/>
+        <Class IRI="#Character"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#hasSpeed"/>
+        <Class IRI="#Character"/>
+    </DataPropertyDomain>
+    <DataPropertyDomain>
+        <DataProperty IRI="#hasStrength"/>
+        <Class IRI="#Character"/>
+    </DataPropertyDomain>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasIntelligence"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasPopularity"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasSpeed"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
+    <DataPropertyRange>
+        <DataProperty IRI="#hasStrength"/>
+        <Datatype abbreviatedIRI="xsd:integer"/>
+    </DataPropertyRange>
 </Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
