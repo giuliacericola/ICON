@@ -72,7 +72,8 @@ def run_reasoning():
     print("[Reasoner] Avvio del ragionatore HermiT...")
 
     with onto:
-        sync_reasoner_hermit(infer_property_values=True)
+        with onto:
+            sync_reasoner_hermit(debug=0)
 
     semantic_results = []
 
