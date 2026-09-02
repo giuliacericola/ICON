@@ -172,9 +172,9 @@ def run_cross_validation_and_plots(X, y):
         plt.show()
     else: print("Visualizzazione Grafico Annullata, il programma prosegue...")
 
-# Funzione che esegue una 5-Fold Cross-Validation simulando il comportamento della pipeline ibrida
-# Ad ogni fold l'albero predice e l'ontologia interviene a correggere gli errori
-# Genera un grafico che mette in contrapposizione ML e ML+Ontologia
+# Funzione che valuta la pipeline ibrida (ML + Ontologia) in 5-Fold Cross-Validation.
+# Ad ogni fold, l'ontologia interviene a posteriori per correggere le predizioni errate dell'albero.
+# Genera un grafico comparativo tra l'andamento del solo ML e del modello ibrido semantico.def run_hybrid_cross_validation_and_plot(X, y, df_full):
 def run_hybrid_cross_validation_and_plot(X, y, df_full):
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
 
@@ -260,7 +260,7 @@ def run_hybrid_cross_validation_and_plot(X, y, df_full):
         plt.show()
     else: print("Visualizzazione Grafico Annullata, il programma prosegue...")
 
-# Genera un grafico a baree che confronta il numero di eroi indovinati dal Decision Tree e
+# Genera un grafico a barre che confronta il numero di eroi indovinati dal Decision Tree e
 # il numero di eroi indovinati dal Decision Tree con l'aggiunta dell'ontologia
 def plot_heroes_comparison(heroes_dt_correct, heroes_hybrid_correct, total_heroes):
 

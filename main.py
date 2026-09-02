@@ -2,7 +2,12 @@ import os
 import pandas as pd
 from src import training, semantic_hero, battle
 
-
+# PIPELINE PRINCIPALE DI ESECUZIONE (MAIN PIPELINE)
+# Coordina l'intero flusso di lavoro:
+# 1. Modello Statistico (Machine Learning tramite Decision Tree e K-Fold CV)
+# 2. Modello Logico-Semantico (Popolamento Ontologia OWL e Ragionamento con HermiT)
+# 3. Pipeline Ibrida (Intervento dell'Ontologia per sanare gli errori del ML)
+# 4. Modulo Simulativo di Battle (Sistema Decisionale basato sui tratti inferiti)
 def main():
     print("=" * 70)
     print("HEROES IN SUPER-TRAINING")

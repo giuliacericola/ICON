@@ -11,7 +11,7 @@ def support(value, default=5):
     except (ValueError, TypeError):
         return default
 
-# Modulo avanzato di Decision System e Simulazione di Battaglia Strategica.
+# Modulo avanzato di Simulazione di Battaglia Strategica.
 # Riceve il dataset arricchito dal main, proietta la conoscenza nello Spazio
 # delle Feature e calcola le affinità semantiche tramite Coseno.
 # Recuperato il ruolo stabilito dall'ontologia (estratto nella parte precedente del progetto)

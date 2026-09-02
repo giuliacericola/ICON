@@ -8,7 +8,11 @@ PATH_EMPTY = os.path.join(BASE_DIR, 'Ontologia', 'super_heroes_empty.owl')
 PATH_POPULATED = os.path.join(BASE_DIR, 'Ontologia', 'super_heroes_populated.owl')
 PATH_CSV = os.path.join(BASE_DIR, 'DataSet', 'super_heroes.csv')
 
-
+# Metodo che popola l'ontologia.
+# Carica l'ontologia base vuota (TBox) e il dataset CSV, creando le istanze OWL
+# per ciascun eroe e per le background-knowledge.
+# Inserisce unicamente i dati grezzi senza prendere decisioni logiche,
+# delegando ogni classificazione al reasoner HermiT.
 def populate_ontology():
     default_world.ontologies.clear()
 
@@ -20,17 +24,12 @@ def populate_ontology():
     df = pd.read_csv(PATH_CSV)
 
     with onto:
-        # Individui-marcatore SOLO per la property chain (fonte di potere -> debolezza).
-        # Non esistono più marcatori per TacticalProfile/Reputation: StrategicGenius,
-        # DevastatingForce, Charismatic, Leader, Powerhouse sono ora dedotti
-        # interamente da HermiT tramite le soglie definite nella TBox (facet OWL),
-        # non più assegnati da un if/elif Python.
         supernatural = onto.Supernatural("Supernatural_Single_Inst")
         tech_weapon = onto.TechnologicalWeapon("TechnologicalWeapon_Single_Inst")
         emp = onto.EMP("EMP_Single_Inst")
         sigillo = onto.AntiMagicSeal("AntiMagicSeal_Single_Inst")
 
-        # Background knowledge asserita UNA SOLA VOLTA: da qui il reasoner deduce
+        # Background knowledge asserita una sola volta: il reasoner deduce
         # hasVulnerability di ogni eroe componendo hasPowerSource + hasWeakness.
         tech_weapon.hasWeakness = [emp]
         supernatural.hasWeakness = [sigillo]
@@ -41,11 +40,9 @@ def populate_ontology():
             eroe = onto.Character(clean_name)
 
             # Assegnazione rdfs:label per preservare esattamente il nome del CSV
-            # (evita il bug di perdita info sui nomi con il trattino)
             eroe.label = [raw_name]
 
-            # Unico compito di Python: caricare i dati grezzi del CSV così come sono.
-            # Nessuna soglia, nessuna decisione: la classificazione la fa solo HermiT.
+            # Caricamento dati grezzi
             eroe.hasStrength = [int(row['strength'])]
             eroe.hasIntelligence = [int(row['intelligence'])]
             eroe.hasSpeed = [int(row['speed'])]
@@ -60,7 +57,11 @@ def populate_ontology():
     onto.save(file=PATH_POPULATED, format="rdfxml")
     print(f" ---> Popolamento completato! Generati individui per {len(df)} eroi.")
 
-
+# INFERENZA LOGICA E RAGIONAMENTO SEMANTICO
+# Carica l'ontologia popolata, esegue il ragionatore HermiT per classificare
+# automaticamente gli eroi e risolvere le property chain (es. vulnerabilità EMP).
+# Estrae infine la conoscenza dedotta sotto forma di
+# dizionari pronti per la fase successiva.
 def run_reasoning():
     default_world.ontologies.clear()
 
@@ -87,7 +88,7 @@ def run_reasoning():
         else:
             inferred_role = 'Specialist'
 
-        # Tratti 100% estratti dalle classi ontologiche inferite da HermiT
+        # Tratti estratti dalle classi ontologiche inferite da HermiT
         is_high_mobility = onto.HighMobility in classi_inferite
         is_heavy_hitter = onto.HeavyHitter in classi_inferite
         is_tactician = onto.StrategicGenius in classi_inferite
@@ -108,9 +109,8 @@ def run_reasoning():
 
     print("---> Ragionamento completato! Nuova conoscenza semantica estratta con successo.")
 
-    # Prova diretta di ragionamento relazionale a più salti: nessun eroe è mai
-    # stato assegnato esplicitamente a EMPTarget, è dedotto componendo
-    # hasPowerSource + hasWeakness (property chain).
+    # Deduce EMPTarget componendo
+    # la property chain (hasPowerSource + hasWeakness) senza assegnazioni dirette.
     bersagli_emp = [c.label[0] if c.label else c.name.replace("_", " ") for c in onto.EMPTarget.instances()]
     print(f"[Deduzione] Eroi dedotti vulnerabili a EMP (mai assegnati esplicitamente): {len(bersagli_emp)}")
 
