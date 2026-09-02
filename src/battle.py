@@ -45,29 +45,24 @@ def decision_system(dataset_completo):
             predict_class = 'Character'
 
         tracts = []
-        pop = support(row.get('popularity'))
-        speed = support(row.get('speed'))
-        strg = support(row.get('strength'))
-        intel = support(row.get('intelligence'))
-        powers = support(row.get('power_source'))
 
-        if pop <= 4:
+        # Estrazione diretta dei tratti calcolati dall'ontologia HermiT
+        if row.get('is_low_profile', False):
             tracts.append("has_trait_low_profile")
-        elif pop >= 8:
+        elif row.get('is_influencer', False):
             tracts.append("has_trait_influencer")
 
-        if speed >= 7:
+        if row.get('is_high_mobility', False):
             tracts.append("has_trait_high_mobility")
 
-        if strg >= 8:
+        if row.get('is_heavy_hitter', False):
             tracts.append("has_trait_heavy_hitter")
 
-        if intel >= 8:
+        if row.get('is_tactician', False):
             tracts.append("has_trait_tactician")
 
-        if powers == 'Technological_Weapon':
-            tracts.append("has_trait_TechonologicalWeapon")
-
+        if row.get('is_tech', False) or row.get('power_source') == 'Technological_Weapon':
+            tracts.append("has_trait_TechnologicalWeapon")
 
         string_trats = " ".join(tracts)
 
@@ -75,7 +70,7 @@ def decision_system(dataset_completo):
 
         semantic_body[hero_name] = string
         heroes_map[hero_name] = {
-            "nome": hero_name.replace("_", " "),
+            "nome": str(hero_name),
             "ruolo": predict_class,
             "universo": universe
         }
@@ -101,11 +96,9 @@ def decision_system(dataset_completo):
         "3": {
             "titolo": "LEADER IDEALE (Attacco Cyber)",
             "descrizione": "Chi rispecchia maggiormente il ruolo di leader per fronteggiare un attacco cyber?",
-            "stringa_target": "is_classified_as_Leader has_trait_tactician has_trait_TechonologicalWeapon"
+            "stringa_target": "is_classified_as_Leader has_trait_tactician has_trait_TechnologicalWeapon"
         }
-
     }
-
 
     while True:
         print("\n" + "=" * 75)
@@ -135,7 +128,7 @@ def decision_system(dataset_completo):
         sim = cosine_similarity(vect, mat_embedding).flatten()
         index = np.argsort(sim)[::-1]
 
-        # stampa ris
+        # Stampa risultati
         print("\n" + "-" * 75)
         print(f" RISPOSTA ALLA QUERY SEMANTICA: {chosen_scenary['titolo']}")
         print(f" Target: '{right_query}'")

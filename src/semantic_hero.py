@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from owlready2 import *
 
@@ -37,8 +36,13 @@ def populate_ontology():
         supernatural.hasWeakness = [sigillo]
 
         for _, row in df.iterrows():
-            clean_name = row['name'].replace(" ", "_").replace("'", "").replace("-", "_")
+            raw_name = str(row['name'])
+            clean_name = raw_name.replace(" ", "_").replace("'", "").replace("-", "_")
             eroe = onto.Character(clean_name)
+
+            # Assegnazione rdfs:label per preservare esattamente il nome del CSV
+            # (evita il bug di perdita info sui nomi con il trattino)
+            eroe.label = [raw_name]
 
             # Unico compito di Python: caricare i dati grezzi del CSV così come sono.
             # Nessuna soglia, nessuna decisione: la classificazione la fa solo HermiT.
@@ -72,7 +76,7 @@ def run_reasoning():
     semantic_results = []
 
     for char in onto.Character.instances():
-        original_name = char.name.replace("_", " ")
+        original_name = char.label[0] if char.label else char.name.replace("_", " ")
 
         classi_inferite = char.INDIRECT_is_a
 
@@ -83,9 +87,23 @@ def run_reasoning():
         else:
             inferred_role = 'Specialist'
 
+        # Tratti 100% estratti dalle classi ontologiche inferite da HermiT
+        is_high_mobility = onto.HighMobility in classi_inferite
+        is_heavy_hitter = onto.HeavyHitter in classi_inferite
+        is_tactician = onto.StrategicGenius in classi_inferite
+        is_low_profile = onto.LowProfile in classi_inferite
+        is_influencer = onto.Charismatic in classi_inferite
+        is_tech = onto.TechnologicalWeapon_Single_Inst in char.hasPowerSource
+
         semantic_results.append({
             'name': original_name,
-            'ruolo_ontologia': inferred_role
+            'ruolo_ontologia': inferred_role,
+            'is_high_mobility': is_high_mobility,
+            'is_heavy_hitter': is_heavy_hitter,
+            'is_tactician': is_tactician,
+            'is_low_profile': is_low_profile,
+            'is_influencer': is_influencer,
+            'is_tech': is_tech
         })
 
     print("---> Ragionamento completato! Nuova conoscenza semantica estratta con successo.")
@@ -93,7 +111,7 @@ def run_reasoning():
     # Prova diretta di ragionamento relazionale a più salti: nessun eroe è mai
     # stato assegnato esplicitamente a EMPTarget, è dedotto componendo
     # hasPowerSource + hasWeakness (property chain).
-    bersagli_emp = [c.name.replace("_", " ") for c in onto.EMPTarget.instances()]
+    bersagli_emp = [c.label[0] if c.label else c.name.replace("_", " ") for c in onto.EMPTarget.instances()]
     print(f"[Deduzione] Eroi dedotti vulnerabili a EMP (mai assegnati esplicitamente): {len(bersagli_emp)}")
 
     return semantic_results

@@ -19,19 +19,26 @@
     <Declaration><Class IRI="#Leader"/></Declaration>
     <Declaration><Class IRI="#Powerhouse"/></Declaration>
     <Declaration><Class IRI="#Specialist"/></Declaration>
+
     <Declaration><Class IRI="#TacticalProfile"/></Declaration>
     <Declaration><Class IRI="#StrategicGenius"/></Declaration>
     <Declaration><Class IRI="#DevastatingForce"/></Declaration>
+    <Declaration><Class IRI="#HighMobility"/></Declaration>
+    <Declaration><Class IRI="#HeavyHitter"/></Declaration>
+
     <Declaration><Class IRI="#Reputation"/></Declaration>
     <Declaration><Class IRI="#Charismatic"/></Declaration>
     <Declaration><Class IRI="#LowProfile"/></Declaration>
     <Declaration><Class IRI="#MediumReputation"/></Declaration>
+
     <Declaration><Class IRI="#Universe"/></Declaration>
     <Declaration><Class IRI="#DC"/></Declaration>
     <Declaration><Class IRI="#MC"/></Declaration>
+
     <Declaration><Class IRI="#PowerSource"/></Declaration>
     <Declaration><Class IRI="#Supernatural"/></Declaration>
     <Declaration><Class IRI="#TechnologicalWeapon"/></Declaration>
+
     <Declaration><Class IRI="#Weakness"/></Declaration>
     <Declaration><Class IRI="#EMP"/></Declaration>
     <Declaration><Class IRI="#AntiMagicSeal"/></Declaration>
@@ -47,79 +54,109 @@
     <Declaration><DataProperty IRI="#hasSpeed"/></Declaration>
     <Declaration><DataProperty IRI="#hasPopularity"/></Declaration>
 
-    <!-- ===================== Ruoli tattici (ora 100% dedotti da HermiT) =====================
-         Nessuna soglia calcolata in Python: hasIntelligence/hasStrength/hasPopularity sono
-         SOLO dati grezzi caricati dal CSV. Tutta la classificazione avviene qui, tramite
-         DataSomeValuesFrom con facet numerici (minInclusive). -->
+    <!-- ===================== Definizione Tratti (Membri di TacticalProfile e Reputation) ===================== -->
 
-    <!-- StrategicGenius ≡ Character ⊓ ∃hasIntelligence.[>=8] -->
+    <!-- StrategicGenius ≡ ∃hasIntelligence.[>=8] -->
     <EquivalentClasses>
         <Class IRI="#StrategicGenius"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#Character"/>
-            <DataSomeValuesFrom>
-                <DataProperty IRI="#hasIntelligence"/>
-                <DatatypeRestriction>
-                    <Datatype abbreviatedIRI="xsd:integer"/>
-                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
-                    </FacetRestriction>
-                </DatatypeRestriction>
-            </DataSomeValuesFrom>
-        </ObjectIntersectionOf>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasIntelligence"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
     </EquivalentClasses>
 
-    <!-- DevastatingForce ≡ Character ⊓ ∃hasStrength.[>=7] -->
+    <!-- DevastatingForce ≡ ∃hasStrength.[>=7] -->
     <EquivalentClasses>
         <Class IRI="#DevastatingForce"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#Character"/>
-            <DataSomeValuesFrom>
-                <DataProperty IRI="#hasStrength"/>
-                <DatatypeRestriction>
-                    <Datatype abbreviatedIRI="xsd:integer"/>
-                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
-                    </FacetRestriction>
-                </DatatypeRestriction>
-            </DataSomeValuesFrom>
-        </ObjectIntersectionOf>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasStrength"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
     </EquivalentClasses>
 
-    <!-- Charismatic ≡ Character ⊓ ∃hasPopularity.[>=8] -->
+    <!-- HighMobility ≡ ∃hasSpeed.[>=7] -->
+    <EquivalentClasses>
+        <Class IRI="#HighMobility"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasSpeed"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">7</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
+    </EquivalentClasses>
+
+    <!-- HeavyHitter ≡ ∃hasStrength.[>=8] -->
+    <EquivalentClasses>
+        <Class IRI="#HeavyHitter"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasStrength"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
+    </EquivalentClasses>
+
+    <!-- Charismatic ≡ ∃hasPopularity.[>=8] -->
     <EquivalentClasses>
         <Class IRI="#Charismatic"/>
-        <ObjectIntersectionOf>
-            <Class IRI="#Character"/>
-            <DataSomeValuesFrom>
-                <DataProperty IRI="#hasPopularity"/>
-                <DatatypeRestriction>
-                    <Datatype abbreviatedIRI="xsd:integer"/>
-                    <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
-                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
-                    </FacetRestriction>
-                </DatatypeRestriction>
-            </DataSomeValuesFrom>
-        </ObjectIntersectionOf>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasPopularity"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">8</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
     </EquivalentClasses>
 
-    <!-- Leader ≡ StrategicGenius ⊓ Charismatic -->
+    <!-- LowProfile ≡ ∃hasPopularity.[<=4] -->
+    <EquivalentClasses>
+        <Class IRI="#LowProfile"/>
+        <DataSomeValuesFrom>
+            <DataProperty IRI="#hasPopularity"/>
+            <DatatypeRestriction>
+                <Datatype abbreviatedIRI="xsd:integer"/>
+                <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxInclusive">
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">4</Literal>
+                </FacetRestriction>
+            </DatatypeRestriction>
+        </DataSomeValuesFrom>
+    </EquivalentClasses>
+
+    <!-- ===================== Definizione Ruoli (Sottoclassi Dirette di Character) ===================== -->
+
+    <!-- Leader ≡ Character ⊓ StrategicGenius ⊓ Charismatic -->
     <EquivalentClasses>
         <Class IRI="#Leader"/>
         <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
             <Class IRI="#StrategicGenius"/>
             <Class IRI="#Charismatic"/>
         </ObjectIntersectionOf>
     </EquivalentClasses>
 
-    <!-- Powerhouse ≡ DevastatingForce ⊓ ¬StrategicGenius
-         Il complemento è ESPLICITO qui, nella TBox: non serve più che Python
-         "si ricordi" di non assegnare mai le due categorie insieme. Se un eroe
-         soddisfacesse entrambe le condizioni numeriche, HermiT lo classifica
-         Leader (se anche Charismatic) o nessuno dei due (mai un conflitto). -->
+    <!-- Powerhouse ≡ Character ⊓ DevastatingForce ⊓ ¬StrategicGenius -->
     <EquivalentClasses>
         <Class IRI="#Powerhouse"/>
         <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
             <Class IRI="#DevastatingForce"/>
             <ObjectComplementOf>
                 <Class IRI="#StrategicGenius"/>
@@ -127,23 +164,7 @@
         </ObjectIntersectionOf>
     </EquivalentClasses>
 
-    <SubClassOf><Class IRI="#Leader"/><Class IRI="#Character"/></SubClassOf>
-    <SubClassOf><Class IRI="#Powerhouse"/><Class IRI="#Character"/></SubClassOf>
-    <SubClassOf><Class IRI="#Specialist"/><Class IRI="#Character"/></SubClassOf>
-    <SubClassOf><Class IRI="#StrategicGenius"/><Class IRI="#TacticalProfile"/></SubClassOf>
-    <SubClassOf><Class IRI="#DevastatingForce"/><Class IRI="#TacticalProfile"/></SubClassOf>
-    <SubClassOf><Class IRI="#Charismatic"/><Class IRI="#Reputation"/></SubClassOf>
-    <SubClassOf><Class IRI="#LowProfile"/><Class IRI="#Reputation"/></SubClassOf>
-    <SubClassOf><Class IRI="#MediumReputation"/><Class IRI="#Reputation"/></SubClassOf>
-    <SubClassOf><Class IRI="#DC"/><Class IRI="#Universe"/></SubClassOf>
-    <SubClassOf><Class IRI="#MC"/><Class IRI="#Universe"/></SubClassOf>
-    <SubClassOf><Class IRI="#Supernatural"/><Class IRI="#PowerSource"/></SubClassOf>
-    <SubClassOf><Class IRI="#TechnologicalWeapon"/><Class IRI="#PowerSource"/></SubClassOf>
-    <SubClassOf><Class IRI="#EMP"/><Class IRI="#Weakness"/></SubClassOf>
-    <SubClassOf><Class IRI="#AntiMagicSeal"/><Class IRI="#Weakness"/></SubClassOf>
-    <SubClassOf><Class IRI="#EMPTarget"/><Class IRI="#Character"/></SubClassOf>
-
-    <!-- PROPERTY CHAIN (invariata): hasPowerSource o hasWeakness -> hasVulnerability -->
+    <!-- EMPTarget ≡ Character ⊓ ∃hasVulnerability.EMP -->
     <EquivalentClasses>
         <Class IRI="#EMPTarget"/>
         <ObjectIntersectionOf>
@@ -155,6 +176,30 @@
         </ObjectIntersectionOf>
     </EquivalentClasses>
 
+    <!-- ===================== Gerarchia esplicita (SubClassOf) ===================== -->
+
+    <SubClassOf><Class IRI="#Leader"/><Class IRI="#Character"/></SubClassOf>
+    <SubClassOf><Class IRI="#Powerhouse"/><Class IRI="#Character"/></SubClassOf>
+    <SubClassOf><Class IRI="#Specialist"/><Class IRI="#Character"/></SubClassOf>
+
+    <SubClassOf><Class IRI="#StrategicGenius"/><Class IRI="#TacticalProfile"/></SubClassOf>
+    <SubClassOf><Class IRI="#DevastatingForce"/><Class IRI="#TacticalProfile"/></SubClassOf>
+    <SubClassOf><Class IRI="#HighMobility"/><Class IRI="#TacticalProfile"/></SubClassOf>
+    <SubClassOf><Class IRI="#HeavyHitter"/><Class IRI="#TacticalProfile"/></SubClassOf>
+
+    <SubClassOf><Class IRI="#Charismatic"/><Class IRI="#Reputation"/></SubClassOf>
+    <SubClassOf><Class IRI="#LowProfile"/><Class IRI="#Reputation"/></SubClassOf>
+    <SubClassOf><Class IRI="#MediumReputation"/><Class IRI="#Reputation"/></SubClassOf>
+
+    <SubClassOf><Class IRI="#DC"/><Class IRI="#Universe"/></SubClassOf>
+    <SubClassOf><Class IRI="#MC"/><Class IRI="#Universe"/></SubClassOf>
+    <SubClassOf><Class IRI="#Supernatural"/><Class IRI="#PowerSource"/></SubClassOf>
+    <SubClassOf><Class IRI="#TechnologicalWeapon"/><Class IRI="#PowerSource"/></SubClassOf>
+    <SubClassOf><Class IRI="#EMP"/><Class IRI="#Weakness"/></SubClassOf>
+    <SubClassOf><Class IRI="#AntiMagicSeal"/><Class IRI="#Weakness"/></SubClassOf>
+    <SubClassOf><Class IRI="#EMPTarget"/><Class IRI="#Character"/></SubClassOf>
+
+    <!-- Disgiunzioni -->
     <DisjointClasses>
         <Class IRI="#Charismatic"/>
         <Class IRI="#LowProfile"/>
@@ -169,6 +214,7 @@
         <Class IRI="#Specialist"/>
     </DisjointClasses>
 
+    <!-- Proprietà -->
     <SubObjectPropertyOf>
         <ObjectProperty IRI="#hasPowerSource"/>
         <ObjectProperty abbreviatedIRI="owl:topObjectProperty"/>
@@ -216,13 +262,3 @@
     <DataPropertyRange><DataProperty IRI="#hasPopularity"/><Datatype abbreviatedIRI="xsd:integer"/></DataPropertyRange>
 
 </Ontology>
-
-
-
-<!-- v3: soglie Leader/Powerhouse/StrategicGenius/DevastatingForce/Charismatic ora
-     100% dedotte da HermiT tramite facet sui Data Property (nessuna soglia in
-     Python). Powerhouse esclude esplicitamente StrategicGenius nella TBox stessa:
-     la disgiunzione con Leader è garantita dalla logica, non dal codice.
-     Rimosse hasTacticalProfile/hasReputation e i relativi individui-marcatore:
-     non più necessari, la classificazione non passa più per un object property
-     "pre-calcolato" da Python. -->
