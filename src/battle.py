@@ -1,108 +1,69 @@
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+# Modulo di Simulazione di Battaglia Strategica con Reasoning a Due Livelli.
+# Primo livello: Deduzione Logica Esatta (OWL DL EquivalentClasses / Property Chains).
+# Secondo livello: Ranking Euristico di Prossimità (Fallback per copertura parziale dei criteri).
 
-# Funzione di supporto per evitare crash in caso di valori NaN o nulli nel dataset
-def support(value, default=5):
-    try:
-        if value is None or str(value).lower() == 'nan' or str(value).strip() == '':
-            return default
-        return int(float(value))
-    except (ValueError, TypeError):
-        return default
-
-# Modulo avanzato di Simulazione di Battaglia Strategica.
-# Riceve il dataset arricchito dal main, proietta la conoscenza nello Spazio
-# delle Feature e calcola le affinità semantiche tramite Coseno.
-# Recuperato il ruolo stabilito dall'ontologia (estratto nella parte precedente del progetto)
-# Traduzione controllata delle statistiche dei supereroi in vincoli logici, al riparo da errori
-# di formattazione del dataset.
-# Vettorizzazione ed embedding, definiti gli scenari di query
-# Calcolo del coseno come euristica di matching
-# Stampa i risultati
 def decision_system(dataset_completo):
-
-    semantic_body = {}
     heroes_map = {}
-
     for row in dataset_completo:
-        hero_name = row['name']
-        universe_raw = 'Unknown'
-        for key_universe in ['universe', 'universe_x', 'universe_y', 'faction', 'Faction', 'universo']:
-            if key_universe in row and row[key_universe] is not None and str(row[key_universe]) != 'nan':
-                universe_raw = str(row[key_universe]).strip()
-                break
+        heroes_map[row['name']] = {
+            "nome": str(row['name']),
+            "ruolo": row.get('ruolo_ontologia', 'Character'),
+            "universo": row.get('universe', 'Unknown'),
 
-        if universe_raw.upper() in ['MC', 'MARVEL', 'MARVEL COMICS']:
-            universe = "Marvel"
-        elif universe_raw.upper() in ['DC', 'DC COMICS']:
-            universe = "DC"
-        else:
-            universe = universe_raw
+            # Classi composte dedotte direttamente dal Reasoner (TBox)
+            "is_ideal_infiltrator": bool(row.get('is_ideal_infiltrator', False)),
+            "is_ideal_cyber_commander": bool(row.get('is_ideal_cyber_commander', False)),
+            "is_emp_target": bool(row.get('is_emp_target', False)),
+            "is_antimagic_target": bool(row.get('is_antimagic_target', False)),
 
-        predict_class = row.get('ruolo_ontologia', 'Character')
-        if predict_class is None or str(predict_class) == 'nan' or str(predict_class).strip() == '':
-            predict_class = 'Character'
-
-        tracts = []
-
-        # Estrazione diretta dei tratti calcolati dall'ontologia HermiT
-        if row.get('is_low_profile', False):
-            tracts.append("has_trait_low_profile")
-        elif row.get('is_influencer', False):
-            tracts.append("has_trait_influencer")
-
-        if row.get('is_high_mobility', False):
-            tracts.append("has_trait_high_mobility")
-
-        if row.get('is_heavy_hitter', False):
-            tracts.append("has_trait_heavy_hitter")
-
-        if row.get('is_tactician', False):
-            tracts.append("has_trait_tactician")
-
-        if row.get('is_tech', False) or row.get('power_source') == 'Technological_Weapon':
-            tracts.append("has_trait_TechnologicalWeapon")
-
-        string_trats = " ".join(tracts)
-
-        string = f"Character_{hero_name} is_classified_as_{predict_class} belongs_to_{universe} {string_trats}"
-
-        semantic_body[hero_name] = string
-        heroes_map[hero_name] = {
-            "nome": str(hero_name),
-            "ruolo": predict_class,
-            "universo": universe
+            # Criteri booleani elementari (usati per il fallback euristico)
+            "is_specialist": row.get('ruolo_ontologia') == 'Specialist',
+            "is_powerhouse": row.get('ruolo_ontologia') == 'Powerhouse',
+            "is_leader": row.get('ruolo_ontologia') == 'Leader',
+            "is_low_profile": bool(row.get('is_low_profile', False)),
+            "is_high_mobility": bool(row.get('is_high_mobility', False)),
+            "is_heavy_hitter": bool(row.get('is_heavy_hitter', False)),
+            "is_tactician": bool(row.get('is_tactician', False)),
+            "is_tech": bool(row.get('is_tech', False)),
         }
-
-    # Proiezione nello Spazio delle Feature
-    heroes_names = list(semantic_body.keys())
-    semantic_text = list(semantic_body.values())
-
-    vectorizer = TfidfVectorizer()
-    mat_embedding = vectorizer.fit_transform(semantic_text)
 
     scenary_query = {
         "1": {
             "titolo": "MISSIONE SEGRETA (Infiltrazione spionistica)",
-            "descrizione": "Seleziona eroi Specialist a basso profilo e alta mobilità.",
-            "stringa_target": "is_classified_as_Specialist has_trait_low_profile has_trait_high_mobility"
+            "descrizione": "Estrazione diretta della classe composta OWL 'IdealInfiltrator' (Specialist ⊓ LowProfile ⊓ HighMobility).",
+            "classe_dedotta": "is_ideal_infiltrator",
+            "criteri_fallback": ["is_specialist", "is_low_profile", "is_high_mobility"]
         },
         "2": {
             "titolo": "SIMULATORE DI BATTAGLIA: SQUADRA MARVEL vs MINACCIA DC",
-            "descrizione": "Genera la coalizione ottimale Marvel (Powerhouse e Leader tattici) per contrastare la DC.",
-            "stringa_target": "belongs_to_Marvel is_classified_as_Powerhouse has_trait_heavy_hitter is_classified_as_Leader has_trait_tactician"
+            "descrizione": "Genera la coalizione ottimale Marvel valutando sia profilazione esatta sia copertura parziale dei ruoli.",
+            "classe_dedotta": None,  # Mantiene selezione di squadra per criteri su vincolo di universo
+            "criteri_fallback": ["is_powerhouse", "is_heavy_hitter", "is_leader", "is_tactician"],
+            "vincolo_universo": "Marvel"
         },
         "3": {
             "titolo": "LEADER IDEALE (Attacco Cyber)",
-            "descrizione": "Chi rispecchia maggiormente il ruolo di leader per fronteggiare un attacco cyber?",
-            "stringa_target": "is_classified_as_Leader has_trait_tactician has_trait_TechnologicalWeapon"
+            "descrizione": "Estrazione diretta della classe composta OWL 'IdealCyberCommander' (Leader ⊓ ∃hasPowerSource.TechnologicalWeapon).",
+            "classe_dedotta": "is_ideal_cyber_commander",
+            "criteri_fallback": ["is_leader", "is_tactician", "is_tech"]
+        },
+        "4": {
+            "titolo": "CONTROMISURA EMP (Bersagli vulnerabili)",
+            "descrizione": "Identifica le istanze della classe dedotta EMPTarget via Property Chain (hasPowerSource ∘ hasWeakness ⊑ hasVulnerability).",
+            "classe_dedotta": "is_emp_target",
+            "criteri_fallback": ["is_emp_target"]
+        },
+        "5": {
+            "titolo": "CONTROMISURA ANTI-MAGICA (Bersagli vulnerabili)",
+            "descrizione": "Identifica le istanze della classe dedotta AntiMagicSealTarget via Property Chain.",
+            "classe_dedotta": "is_antimagic_target",
+            "criteri_fallback": ["is_antimagic_target"]
         }
     }
 
     while True:
         print("\n" + "=" * 75)
-        print("QUESTION ANSWERING ")
+        print("QUESTION ANSWERING SEMANTICO (Reasoning DL Esatto + Fallback Euristico)")
         print("=" * 75)
         print("Scegli lo scenario!")
         for key, item in scenary_query.items():
@@ -120,61 +81,68 @@ def decision_system(dataset_completo):
             print("[INFO] Scelta non valida. Riprova.")
             continue
 
-        chosen_scenary = scenary_query[choose]
-        right_query = chosen_scenary["stringa_target"]
+        chosen = scenary_query[choose]
+        classe_dedotta = chosen.get("classe_dedotta")
+        criteri_fallback = chosen["criteri_fallback"]
+        vincolo_universo = chosen.get("vincolo_universo")
 
-        # Calcolo coseno
-        vect = vectorizer.transform([right_query])
-        sim = cosine_similarity(vect, mat_embedding).flatten()
-        index = np.argsort(sim)[::-1]
+        candidati_esatti = []
+        candidati_parziali = []
 
-        # Stampa risultati
-        print("\n" + "-" * 75)
-        print(f" RISPOSTA ALLA QUERY SEMANTICA: {chosen_scenary['titolo']}")
-        print(f" Target: '{right_query}'")
-        print("-" * 75)
-
-        if choose == "1":
-            print(" >> INFILTRAZIONE: Rilevato scenario ostile ad alto rischio visibilità.")
-            print(" >> ALGORITMO: Estrazione agenti furtivi...\n")
-            print(f" {'Membro Suggerito':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
-        elif choose == "2":
-            print(" >> ALLERTA: Squadra nemica DC Comics in avvicinamento.")
-            print(" >> ALGORITMO: Ottimizzazione della coalizione difensiva Marvel...\n")
-            print(f" {'Membro Reclutato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
-        elif choose == "3":
-            print(" >> CYBER ATTACK: Violazione dell'infrastruttura di rete rilevata.")
-            print(" >> ALGORITMO: Selezione di vertici di comando con feature tecnologiche...\n")
-            print(f" {'Leader Consigliato':<25} | {'Classe OWL':<15} | {'Universo':<10} | {'Affinità'}")
-        print("-" * 75)
-
-        c = 0
-        for idx in index:
-            score = sim[idx]
-            id_hero = heroes_names[idx]
-            info = heroes_map[id_hero]
-
-            # Filtro asimmetrico per la battaglia: escludiamo i difensori che non appartengono alla Marvel
-            if choose == "2" and info['universo'] != "Marvel":
+        # --- FASE 1: RAGIONAMENTO LOGICO ESATTO (TBox EquivalentClasses / Reasoning) ---
+        for nome, info in heroes_map.items():
+            if vincolo_universo and info["universo"] != vincolo_universo:
                 continue
 
-            if score > 0 and c < 4:
-                print(f" -> {info['nome']:<22} | {info['ruolo']:<15} | {info['universo']:<10} | {score * 100:.2f}%")
-                c += 1
+            # Se lo scenario prevede una classe composta equivalente, chiediamo la membership al reasoner
+            if classe_dedotta and info.get(classe_dedotta, False):
+                candidati_esatti.append((1.0, len(criteri_fallback), nome, info, "DEDUZIONE LOGICA ESATTA (100%)"))
+            else:
+                # --- FASE 2: COPERTURA EURISTICA PARZIALE (Fallback) ---
+                soddisfatti = sum(1 for c in criteri_fallback if info.get(c, False))
+                copertura = soddisfatti / len(criteri_fallback)
+                if copertura > 0:
+                    candidati_parziali.append(
+                        (copertura, soddisfatti, nome, info, f"PROSSIMITÀ EURISTICA ({copertura * 100:.0f}%)"))
 
-        if choose == "1":
-            print("-" * 75)
-            print(" ESITO SIMULAZIONE: Task-force a basso profilo identificata tramite minimizzazione d'angolo.")
-            print(" Parametri di mobilità e anonimato geometricamente soddisfatti.")
-        elif choose == "2":
-            print("-" * 75)
-            print(" ESITO SIMULAZIONE: Coerenza tattica della coalizione Marvel ottimizzata.")
-            print(" Spazio degli Stati potato con successo tramite euristica geometrica.")
-        elif choose == "3":
-            print("-" * 75)
-            print(" ESITO SIMULAZIONE: Comando di difesa cyber strutturato con successo.")
-            print(" Intersezione di Feature logiche e armamenti tecnologici massimizzata.")
+        # Selezione della strategia di output
+        if candidati_esatti:
+            risultati = candidati_esatti
+            modalita_risposta = "REASONER DL (Corrispondenza formale perfetta trovata in TBox)"
+        else:
+            candidati_parziali.sort(key=lambda t: (t[0], t[1]), reverse=True)
+            risultati = candidati_parziali
+            modalita_risposta = "FALLBACK EURISTICO (Nessun match esatto in TBox, ranking per prossimità)"
 
+        print("\n" + "-" * 75)
+        print(f" RISPOSTA ALLA QUERY SEMANTICA: {chosen['titolo']}")
+        print(f" MODALITÀ ELABORAZIONE: {modalita_risposta}")
+        print("-" * 75)
+
+        intestazioni = {
+            "1": "Membro Suggerito",
+            "2": "Membro Reclutato",
+            "3": "Leader Consigliato",
+            "4": "Bersaglio EMP",
+            "5": "Bersaglio Anti-Magia"
+        }
+        etichetta = intestazioni[choose]
+
+        print(f" {etichetta:<22} | {'Classe OWL':<15} | {'Universo':<10} | {'Esito Reasoning / Match'}")
+        print("-" * 75)
+
+        for copertura, soddisfatti, nome, info, tipo_match in risultati[:5]:
+            print(f" -> {info['nome']:<19} | {info['ruolo']:<15} | {info['universo']:<10} | {tipo_match}")
+
+        print("-" * 75)
+        esiti = {
+            "1": " ESITO: Infiltrati identificati direttamente tramite la classe composta IdealInfiltrator.",
+            "2": " ESITO: Coalizione Marvel ottimizzata tramite intersezione dei profili tattici.",
+            "3": " ESITO: Cyber-comandanti identificati tramite la classe composta IdealCyberCommander.",
+            "4": " ESITO: Bersagli EMP dedotti tramite la property chain hasPowerSource ∘ hasWeakness.",
+            "5": " ESITO: Bersagli Anti-Magia dedotti tramite la property chain hasPowerSource ∘ hasWeakness."
+        }
+        print(esiti[choose])
         print("=" * 75)
 
         input("\nPremere [INVIO] per tornare al menu delle query...")

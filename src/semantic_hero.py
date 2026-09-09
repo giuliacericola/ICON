@@ -29,8 +29,12 @@ def populate_ontology():
         emp = onto.EMP("EMP_Single_Inst")
         sigillo = onto.AntiMagicSeal("AntiMagicSeal_Single_Inst")
 
+        dc_universe = onto.DC("DC_Universe_Inst")
+        mc_universe = onto.MC("MC_Universe_Inst")
+
         # Background knowledge asserita una sola volta: il reasoner deduce
         # hasVulnerability di ogni eroe componendo hasPowerSource + hasWeakness.
+        # Simmetrica per costruzione: Tech -> EMP, Supernatural -> AntiMagicSeal.
         tech_weapon.hasWeakness = [emp]
         supernatural.hasWeakness = [sigillo]
 
@@ -54,14 +58,19 @@ def populate_ontology():
             else:
                 eroe.hasPowerSource = [supernatural]
 
+            universe_raw = str(row.get('universe', '')).strip().upper()
+            if universe_raw in ('DC', 'DC COMICS'):
+                eroe.hasUniverse = [dc_universe]
+            elif universe_raw in ('MC', 'MARVEL', 'MARVEL COMICS'):
+                eroe.hasUniverse = [mc_universe]
+
     onto.save(file=PATH_POPULATED, format="rdfxml")
     print(f" ---> Popolamento completato! Generati individui per {len(df)} eroi.")
 
-# INFERENZA LOGICA E RAGIONAMENTO SEMANTICO
-# Carica l'ontologia popolata, esegue il ragionatore HermiT per classificare
-# automaticamente gli eroi e risolvere le property chain (es. vulnerabilità EMP).
-# Estrae infine la conoscenza dedotta sotto forma di
-# dizionari pronti per la fase successiva.
+# Metodo che carica l'ontologia popolata, esegue il ragionatore HermiT per classificare
+# automaticamente gli eroi e risolvere le property chain (es. vulnerabilità EMP e
+# vulnerabilità al sigillo anti-magico).
+# Estrae infine la conoscenza dedotta sotto forma di dizionari pronti per la fase successiva.
 def run_reasoning():
     default_world.ontologies.clear()
 
@@ -74,6 +83,13 @@ def run_reasoning():
     with onto:
         with onto:
             sync_reasoner_hermit(debug=0)
+
+    # Insiemi di bersagli dedotti dal reasoner via property chain
+    # (hasPowerSource -> hasWeakness): nessuna delle due etichette è mai
+    # assegnata esplicitamente nel CSV. Coppia simmetrica e disgiunta:
+    # ogni eroe ricade in esattamente uno dei due insiemi.
+    emp_targets = set(onto.EMPTarget.instances())
+    antimagic_targets = set(onto.AntiMagicSealTarget.instances())
 
     semantic_results = []
 
@@ -96,23 +112,37 @@ def run_reasoning():
         is_low_profile = onto.LowProfile in classi_inferite
         is_influencer = onto.Charismatic in classi_inferite
         is_tech = onto.TechnologicalWeapon_Single_Inst in char.hasPowerSource
+        is_emp_target = char in emp_targets
+        is_antimagic_target = char in antimagic_targets
+
+        # Se un eroe dovesse cambiare universo, basterebbe aggiornare il triplestore,
+        # non il codice del modulo Battle.
+        universo = 'Unknown'
+        if char.hasUniverse:
+            if onto.DC in char.hasUniverse[0].is_a:
+                universo = 'DC'
+            elif onto.MC in char.hasUniverse[0].is_a:
+                universo = 'Marvel'
 
         semantic_results.append({
             'name': original_name,
             'ruolo_ontologia': inferred_role,
+            'universe': universo,
             'is_high_mobility': is_high_mobility,
             'is_heavy_hitter': is_heavy_hitter,
             'is_tactician': is_tactician,
             'is_low_profile': is_low_profile,
             'is_influencer': is_influencer,
-            'is_tech': is_tech
+            'is_tech': is_tech,
+            'is_emp_target': is_emp_target,
+            'is_antimagic_target': is_antimagic_target
         })
 
     print("---> Ragionamento completato! Nuova conoscenza semantica estratta con successo.")
 
-    # Deduce EMPTarget componendo
-    # la property chain (hasPowerSource + hasWeakness) senza assegnazioni dirette.
-    bersagli_emp = [c.label[0] if c.label else c.name.replace("_", " ") for c in onto.EMPTarget.instances()]
-    print(f"[Deduzione] Eroi dedotti vulnerabili a EMP (mai assegnati esplicitamente): {len(bersagli_emp)}")
+    # Deduce EMPTarget e AntiMagicSealTarget componendo la property chain
+    # (hasPowerSource + hasWeakness) senza assegnazioni dirette.
+    print(f"[Deduzione] Eroi dedotti vulnerabili a EMP: {len(emp_targets)}")
+    print(f"[Deduzione] Eroi dedotti vulnerabili a sigillo anti-magico: {len(antimagic_targets)}")
 
     return semantic_results

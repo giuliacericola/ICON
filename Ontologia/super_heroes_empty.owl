@@ -16,6 +16,9 @@
         <Class IRI="#AntiMagicSeal"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#AntiMagicSealTarget"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#Character"/>
     </Declaration>
     <Declaration>
@@ -38,6 +41,12 @@
     </Declaration>
     <Declaration>
         <Class IRI="#HighMobility"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IdealCyberCommander"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#IdealInfiltrator"/>
     </Declaration>
     <Declaration>
         <Class IRI="#Leader"/>
@@ -73,6 +82,9 @@
         <Class IRI="#TacticalProfile"/>
     </Declaration>
     <Declaration>
+        <Class IRI="#TechPowered"/>
+    </Declaration>
+    <Declaration>
         <Class IRI="#TechnologicalWeapon"/>
     </Declaration>
     <Declaration>
@@ -105,6 +117,16 @@
     <Declaration>
         <DataProperty IRI="#hasStrength"/>
     </Declaration>
+    <EquivalentClasses>
+        <Class IRI="#AntiMagicSealTarget"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Character"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty IRI="#hasVulnerability"/>
+                <Class IRI="#AntiMagicSeal"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
     <EquivalentClasses>
         <Class IRI="#Charismatic"/>
         <DataSomeValuesFrom>
@@ -164,6 +186,21 @@
         </DataSomeValuesFrom>
     </EquivalentClasses>
     <EquivalentClasses>
+        <Class IRI="#IdealCyberCommander"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#Leader"/>
+            <Class IRI="#TechPowered"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#IdealInfiltrator"/>
+        <ObjectIntersectionOf>
+            <Class IRI="#HighMobility"/>
+            <Class IRI="#LowProfile"/>
+            <Class IRI="#Specialist"/>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
         <Class IRI="#Leader"/>
         <ObjectIntersectionOf>
             <Class IRI="#Character"/>
@@ -205,9 +242,20 @@
             </DatatypeRestriction>
         </DataSomeValuesFrom>
     </EquivalentClasses>
+    <EquivalentClasses>
+        <Class IRI="#TechPowered"/>
+        <ObjectSomeValuesFrom>
+            <ObjectProperty IRI="#hasPowerSource"/>
+            <Class IRI="#TechnologicalWeapon"/>
+        </ObjectSomeValuesFrom>
+    </EquivalentClasses>
     <SubClassOf>
         <Class IRI="#AntiMagicSeal"/>
         <Class IRI="#Weakness"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#AntiMagicSealTarget"/>
+        <Class IRI="#Character"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Charismatic"/>
@@ -236,6 +284,14 @@
     <SubClassOf>
         <Class IRI="#HighMobility"/>
         <Class IRI="#TacticalProfile"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IdealCyberCommander"/>
+        <Class IRI="#Character"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#IdealInfiltrator"/>
+        <Class IRI="#Character"/>
     </SubClassOf>
     <SubClassOf>
         <Class IRI="#Leader"/>
