@@ -1,7 +1,6 @@
 # Modulo di Simulazione di Battaglia Strategica con Reasoning a Due Livelli.
 # Primo livello: Deduzione Logica Esatta (OWL DL EquivalentClasses / Property Chains).
 # Secondo livello: Ranking Euristico di Prossimità (Fallback per copertura parziale dei criteri).
-
 def decision_system(dataset_completo):
     heroes_map = {}
     for row in dataset_completo:
@@ -107,10 +106,12 @@ def decision_system(dataset_completo):
 
         # Selezione della strategia di output
         if candidati_esatti:
+            # Ordinamento alfabetico sui candidati esatti per riproducibilità deterministica
+            candidati_esatti.sort(key=lambda t: t[2])
             risultati = candidati_esatti
             modalita_risposta = "REASONER DL (Corrispondenza formale perfetta trovata in TBox)"
         else:
-            candidati_parziali.sort(key=lambda t: (t[0], t[1]), reverse=True)
+            candidati_parziali.sort(key=lambda t: (t[0], t[1], t[2]), reverse=True)
             risultati = candidati_parziali
             modalita_risposta = "FALLBACK EURISTICO (Nessun match esatto in TBox, ranking per prossimità)"
 

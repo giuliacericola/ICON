@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 from owlready2 import *
 
@@ -115,6 +117,10 @@ def run_reasoning():
         is_emp_target = char in emp_targets
         is_antimagic_target = char in antimagic_targets
 
+        # Estrazione appartenenza alle Classi Composte TBox (inferred via Reasoner)
+        is_ideal_infiltrator = hasattr(onto, "IdealInfiltrator") and (onto.IdealInfiltrator in classi_inferite)
+        is_ideal_cyber_commander = hasattr(onto, "IdealCyberCommander") and (onto.IdealCyberCommander in classi_inferite)
+
         # Se un eroe dovesse cambiare universo, basterebbe aggiornare il triplestore,
         # non il codice del modulo Battle.
         universo = 'Unknown'
@@ -135,7 +141,9 @@ def run_reasoning():
             'is_influencer': is_influencer,
             'is_tech': is_tech,
             'is_emp_target': is_emp_target,
-            'is_antimagic_target': is_antimagic_target
+            'is_antimagic_target': is_antimagic_target,
+            'is_ideal_infiltrator': is_ideal_infiltrator,
+            'is_ideal_cyber_commander': is_ideal_cyber_commander
         })
 
     print("---> Ragionamento completato! Nuova conoscenza semantica estratta con successo.")
